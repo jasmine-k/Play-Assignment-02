@@ -1,0 +1,8 @@
+@(title: String)(implicit flash: Flash)
+
+@main(title) {
+
+<h1>Welcome to Knoldus!</h1>
+<h2>You are successfully signed Up!!</h2>
+<h2>@flash.get("success").getOrElse(flash.get("error"))</h2>
+}

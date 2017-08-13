@@ -1,0 +1,14 @@
+@(title: String, userLoginConstraint: Form[UserLogin])(implicit messages: play.api.i18n.Messages)
+@import helper._
+
+@main(title) {
+<h1>Welcome to Knoldus!</h1>
+
+@helper.form(action = routes.AuthenticationController.loginValidation()){
+@helper.inputText(userLoginConstraint("email"),
+'_showConstraints-> false)
+@helper.inputPassword(userLoginConstraint("password"),
+'_showConstraints-> false)
+<button value="Submit">Submit</button>
+}
+}
