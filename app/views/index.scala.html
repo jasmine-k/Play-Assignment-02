@@ -3,6 +3,6 @@
 @main("Welcome to Knoldus") {
 
 <h1>Welcome to Knoldus!</h1>
-<h2>Enter User-Id and User Name in the above URL in appropriate format!!</h2>
+<h2>@flash.get("success").getOrElse(flash.get("error"))</h2>
 
 }

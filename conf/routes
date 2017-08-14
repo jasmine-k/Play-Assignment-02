@@ -8,6 +8,7 @@
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
+GET    /index                                controllers.Application.index
 
 GET    /                                controllers.Application.signUp
 
@@ -19,9 +20,14 @@ GET     /successpage                      controllers.Application.successLoginMe
 
 GET     /profile                controllers.Application.updateProfile
 
+GET     /password               controllers.Application.forgotPassword
+
 POST     /                         controllers.AuthenticationController.signUpValidation
 
 POST     /login                       controllers.AuthenticationController.loginValidation
 
 POST    /profile                        controllers.AuthenticationController.updateProfile
+
+POST     /password               controllers.AuthenticationController.updatePassword
+
 

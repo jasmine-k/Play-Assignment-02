@@ -42,6 +42,12 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
 
   }
 
+  def index(): Action[AnyContent] = Action { implicit request =>
+
+    Ok(views.html.index())
+
+  }
+
   def successLoginMessageDisplay(): Action[AnyContent] = Action { implicit request =>
 
     Ok(views.html.successLoginMessage("Welcome!"))
@@ -56,7 +62,14 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
 
   def forgotPassword():Action[AnyContent]=  Action { implicit request =>
 
-    Ok(views.html.forgotPassword("Welcome!"))
+   // val updatePasswordForm: Form[UpdatePassword] = userForms.UpdatePasswordConstraintList
+    Ok(views.html.forgotPassword("Welcome!", userForms.UpdatePasswordConstraintList))
+
+  }
+
+  def adminProfile(): Action[AnyContent] = Action { implicit request =>
+
+    Ok(views.html.adminProfile("Welcome!"))
 
   }
 

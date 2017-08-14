@@ -16,6 +16,9 @@ case class Name(firstName: String, middleName: Option[String], lastName: String)
 case class UpdateUserDetails(name: Name, mobileNumber: Long, gender: String,
                              age: Int, email: String, hobbies: List[String])
 
+case class UpdatePassword(email: String, password: String, confirmPassword: String)
+
+
 class UserForms {
 
   val MIN_AGE = 18
@@ -31,7 +34,7 @@ class UserForms {
       "age" -> number(MIN_AGE,MAX_AGE),
       "email" -> email,
       "password" -> text.verifying(passwordValidation),
-      "confirmPassword" -> text.verifying(passwordValidation),
+      "confirmPassword" -> nonEmptyText,//.verifying(passwordValidation),
       "hobbies" -> list(text).verifying(hobbiesValidation)
     )(User.apply)(User.unapply).verifying("Checking for password match", data =>
       data.password == data.confirmPassword))
@@ -91,5 +94,13 @@ class UserForms {
       "email" -> email,
       "hobbies" -> list(text).verifying(hobbiesValidation)
     )(UpdateUserDetails.apply)(UpdateUserDetails.unapply))
+
+  val UpdatePasswordConstraintList = Form(
+    mapping(
+      "email" -> email,
+      "password" -> text.verifying(passwordValidation),
+      "confirmPassword" -> nonEmptyText
+    )(UpdatePassword.apply)(UpdatePassword.unapply).verifying("Checking for password match", data =>
+    data.password == data.confirmPassword))
 
 }

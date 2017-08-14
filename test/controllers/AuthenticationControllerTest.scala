@@ -1,3 +1,4 @@
+/*
 package controllers
 
 import models.{HobbyRepository, UserData, UserHobbyRepository, UserRepository}
@@ -134,5 +135,7 @@ class AuthenticationControllerTest extends PlaySpec with MockitoSugar {
       redirectLocation(result) mustBe Some("/profile")
 
     }
-  }*/
+  }
 }
+*/
+*/

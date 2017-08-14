@@ -39,8 +39,17 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
   }
 
   def getUserId(email: String): Future[Int] = {
-    val extractIdQuery = userQuery.filter(_.email === email).map(_.userId).result.head
-    db.run(extractIdQuery)
+    val extractIdQueryResult = db.run(userQuery.filter(_.email === email).to[List].result)
+    extractIdQueryResult.map{ user =>
+        if(user.isEmpty){
+          -1
+        }
+      else{
+          user.head.userId
+        }
+
+    }
+
   }
 
 
@@ -89,6 +98,22 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
       updatedUserData.name.middleName, updatedUserData.name.lastName, updatedUserData.mobileNumber,
       updatedUserData.gender, updatedUserData.age, updatedUserData.email)).map(_>0)
   }
+
+  def updateUserPassword(email: String, password: String): Future[Boolean]={
+    Logger.info("Updating password in database")
+    db.run(userQuery.filter(_.email === email).map(user => (user.password)).update(password)).map(_>0)
+  }
+
+  def isAdmin(email:String):Future[Boolean]={
+    Logger.info("Checking if is admin from database")
+    db.run(userQuery.filter(_.email === email).map(_.isAdmin).result.head)
+  }
+
+  def isActive(email:String):Future[Boolean]={
+    Logger.info("Checking if is active from database")
+    db.run(userQuery.filter(_.email === email).map(_.isActive).result.head)
+  }
+
 }
 
 trait UserRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
