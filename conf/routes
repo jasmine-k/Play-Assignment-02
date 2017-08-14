@@ -15,9 +15,13 @@ GET     /home                           controllers.Application.successMessageDi
 
 GET    /login                            controllers.Application.loginPage
 
-GET     /home/login                      controllers.Application.successLoginMessageDisplay
+GET     /successpage                      controllers.Application.successLoginMessageDisplay
+
+GET     /profile                controllers.Application.updateProfile
 
 POST     /                         controllers.AuthenticationController.signUpValidation
 
 POST     /login                       controllers.AuthenticationController.loginValidation
+
+POST    /profile                        controllers.AuthenticationController.updateProfile
 

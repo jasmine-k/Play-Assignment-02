@@ -1,0 +1,39 @@
+@(title: String, userUpdateConstraintList: Form[UpdateUserDetails], listOfHobbies: List[String])(implicit messages: play.api.i18n.Messages, flash: Flash)
+@import helper._
+
+@main(title) {
+
+<h1>Welcome to Knoldus!</h1>
+
+@if(userUpdateConstraintList.hasGlobalErrors) {
+<ul>
+    @for(error <- userUpdateConstraintList.globalErrors) {
+    <li>@Messages(error.messages, error.args)</li>
+    }
+</ul>
+}
+
+@helper.form(action = routes.AuthenticationController.updateProfile()){
+@helper.inputText(userUpdateConstraintList("name.firstName"),
+'_showConstraints-> false,'_label -> "First Name")
+@helper.inputText(userUpdateConstraintList("name.middleName"),
+'_showConstraints-> false,'_label -> "Middle Name")
+@helper.inputText(userUpdateConstraintList("name.lastName"),
+'_showConstraints-> false,'_label -> "Last Name")
+@helper.inputText(userUpdateConstraintList("mobileNumber"),
+'_showConstraints-> false,'_label -> "Mobile Number")
+@helper.select(userUpdateConstraintList("gender"), options(List("Male", "Female")),
+'_showConstraints -> false, '_label -> "Gender")
+@helper.inputText(userUpdateConstraintList("age"),
+'_showConstraints -> false, '_label -> "Age")
+@helper.inputText(userUpdateConstraintList("email"),
+'_showConstraints-> false,'_label -> "Email-Id")
+@inputCheckboxGroup(userUpdateConstraintList("hobbies"),options = listOfHobbies.map(hobby => hobby -> hobby),
+'_label -> "Hobbies")
+
+<button value="Submit">Submit</button>
+
+}
+<h2>@flash.get("success").getOrElse(flash.get("error"))</h2>
+
+}

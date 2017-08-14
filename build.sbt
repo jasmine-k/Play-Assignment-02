@@ -16,7 +16,8 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "42.1.4",
   "org.mockito" % "mockito-all" % "1.9.5" % "test",
   "com.h2database" % "h2" % "1.4.188",
-  evolutions
+  "org.mindrot" % "jbcrypt" % "0.4",
+    evolutions
 
   // "com.h2database" % "h2" % "2.5" // replace `${H2_VERSION}` with an actual version number
 )

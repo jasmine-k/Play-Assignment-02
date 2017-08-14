@@ -1,24 +1,40 @@
-@(title: String, userFormConstraint: Form[User])(implicit messages: play.api.i18n.Messages, flash: Flash)
+@(title: String, userFormConstraint: Form[User], listOfHobbies: List[String])(implicit messages: play.api.i18n.Messages, flash: Flash)
 @import helper._
 
 @main(title) {
+
 <h1>Welcome to Knoldus!</h1>
 
+@if(userFormConstraint.hasGlobalErrors) {
+<ul>
+    @for(error <- userFormConstraint.globalErrors) {
+    <li>@Messages(error.messages, error.args)</li>
+    }
+</ul>
+}
+
 @helper.form(action = routes.AuthenticationController.signUpValidation()){
-@helper.inputText(userFormConstraint("firstName"),
-'_showConstraints-> false)
-@helper.inputText(userFormConstraint("lastName"),
-'_showConstraints-> false)
-@helper.inputText(userFormConstraint("gender"),
-'_showConstraints-> false)
-@helper.inputText(userFormConstraint("dateOfBirth"),
-'_showConstraints-> false)
+@helper.inputText(userFormConstraint("name.firstName"),
+'_showConstraints-> false,'_label -> "First Name")
+@helper.inputText(userFormConstraint("name.middleName"),
+'_showConstraints-> false,'_label -> "Middle Name")
+@helper.inputText(userFormConstraint("name.lastName"),
+'_showConstraints-> false,'_label -> "Last Name")
+@helper.inputText(userFormConstraint("mobileNumber"),
+'_showConstraints-> false,'_label -> "Mobile Number")
+@helper.select(userFormConstraint("gender"), options(List("Male", "Female","else")),
+'_showConstraints -> false, '_label -> "Gender")
+@helper.inputText(userFormConstraint("age"),
+'_showConstraints -> false, '_label -> "Age")
 @helper.inputText(userFormConstraint("email"),
-'_showConstraints-> false)
+'_showConstraints-> false,'_label -> "Email-Id")
 @helper.inputPassword(userFormConstraint("password"),
-'_showConstraints-> false)
+'_showConstraints-> false,'_label -> "Password")
 @helper.inputPassword(userFormConstraint("confirmPassword"),
-'_showConstraints-> false)
+'_showConstraints-> false,'_label -> "Confirm Password")
+@inputCheckboxGroup(userFormConstraint("hobbies"),options = listOfHobbies.map(hobby => hobby -> hobby),
+'_label -> "Hobbies")
+
 <button value="Submit">Submit</button>
 
 }
