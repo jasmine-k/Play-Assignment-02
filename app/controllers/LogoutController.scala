@@ -1,13 +1,9 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{HobbyRepository, UserData, UserHobbyRepository, UserRepository}
-import org.mindrot.jbcrypt.BCrypt
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 
@@ -15,12 +11,7 @@ import scala.concurrent.Future
   * This controller creates an `Action` to handle HTTP requests to the
   * application's home page.
   */
-class LogoutController @Inject()(val userRepository: UserRepository,
-                                 val userForms: UserForms,
-                                 hobbyRepository: HobbyRepository,
-                                 userHobbyRepository: UserHobbyRepository,
-                                 val messagesApi: MessagesApi
-                                        ) extends Controller with I18nSupport {
+class LogoutController @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   /**
     * Create an Action to render an HTML page.

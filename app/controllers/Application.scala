@@ -31,7 +31,6 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
   def signUp(): Action[AnyContent] = Action.async { implicit request =>
 
     val signUpForm = userForms.userRegistrationConstraintList
-    //.fill(User("Jasmine",Option("Kaur"),"Kaur",9898989898L,"Female",19,"jasmine@gmail.com","jasmine","jasmine"))
     val listOfHobbies: Future[List[String]] = hobbyRepository.getHobbies
     listOfHobbies.map(hobbies => Ok(views.html.signUp("Sign Up", signUpForm, hobbies)))
 

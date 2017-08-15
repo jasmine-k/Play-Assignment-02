@@ -1,24 +1,18 @@
 package controllers
 
 import com.google.inject.Inject
-import models.{HobbyRepository, UserData, UserHobbyRepository, UserRepository}
-import org.mindrot.jbcrypt.BCrypt
+import models.UserRepository
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
   * This controller creates an `Action` to handle HTTP requests to the
   * application's home page.
   */
 class EnableDisableController @Inject()(val userRepository: UserRepository,
-                                        val userForms: UserForms,
-                                        hobbyRepository: HobbyRepository,
-                                        userHobbyRepository: UserHobbyRepository,
                                         val messagesApi: MessagesApi
                                         ) extends Controller with I18nSupport {
 
@@ -50,7 +44,6 @@ class EnableDisableController @Inject()(val userRepository: UserRepository,
                      Redirect(routes.Application.viewUser()).flashing("success" -> "Enable-Disable updated successfully")
                     case false=>
                       Logger.info("Update false")
-
                       Redirect(routes.Application.viewUser()).flashing("error"-> "Something went wrong")
                   }
                 case false =>
@@ -58,7 +51,7 @@ class EnableDisableController @Inject()(val userRepository: UserRepository,
                   Future.successful(Redirect(routes.Application.viewUser()).flashing("error"->"Something went wrong"))
 
               }
-            case false => Future.successful(Redirect(routes.Application.index()).flashing("error"->"You are not admin")) //-------session destroy
+            case false => Future.successful(Redirect(routes.Application.viewUser()).flashing("error"->"You are not admin"))
           }
         case None => Future.successful(Redirect(routes.Application.index()).flashing("error"-> "You need to login first"))
       }

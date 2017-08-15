@@ -42,24 +42,20 @@ class UpdatePasswordController @Inject()(val userRepository: UserRepository,
 
             case id: Int if (id > 0) => {
               Logger.info("User exits!")
-              /* userRepository.getUserId(userData.email).flatMap {
-                 case id: Int =>{*/
-              Logger.info("Updating Password " + userData.password)
+              Logger.info("Updating Password ")
               val hashPassword = BCrypt.hashpw(userData.password, BCrypt.gensalt())
               userRepository.updateUserPassword(userData.email, hashPassword).map {
                 case true =>
                   Logger.info("Update password pass")
-
                   Redirect(routes.Application.loginPage()).flashing("success" -> "Password updated successfully")
                 case false =>
                   Logger.info("Update password fail")
-                  Ok(views.html.index())
+                  Redirect(routes.Application.loginPage()).flashing("error"->"Something went wrong!")
               }
             }
-            //Redirect(routes.Application.successLoginMessageDisplay())//.withSession("email"-> s"$userData.email","password" -> s"$userData.password")
             case id: Int if (id <= 0) =>
               Logger.info("User does not exists")
-              Future.successful(Redirect(routes.Application.loginPage())) //.flashing("error","Incorrect Email or Password")))
+              Future.successful(Redirect(routes.Application.loginPage()).flashing("error"->"Incorrect Email or Password"))
           }
 
         })

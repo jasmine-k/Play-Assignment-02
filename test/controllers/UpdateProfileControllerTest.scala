@@ -1,4 +1,3 @@
-/*
 package controllers
 
 import akka.stream.Materializer
@@ -30,30 +29,77 @@ class UpdateProfileControllerTest extends PlaySpec with MockitoSugar with GuiceO
     mockUserHobbyRepository, mockMessagesApi)
 
   val mobile = 9999999999L
-  val age = 21
-  val FOUR = 4
+  val age = 18
   val name = Name("jas", Option("kaur"), "kaur")
-  val updatedUserData = UpdateUserDetails(name, mobile, "female", age, List("Swimming"))
+  val updatedProfile = UpdateUserDetails(name, mobile, "female", age, List("Singing"))
 
-  "UpdateProfileController" should {
-    "be able to update profile of user who is Active but not Admin" in {
+  "updateProfileController" should {
+    "be able to update profile" in {
 
-      when(mockUserForms.userUpdateConstraintList).thenReturn(userForms.userUpdateConstraintList.fill(updatedUserData))
-      when(mockUserRepository.updateUserData(updatedUserData,1)).thenReturn(Future(true))
-      when(mockUserHobbyRepository.deleteUserHobby(1)).thenReturn(Future(true))
-      when(mockUserHobbyRepository.addUserHobby(1, List(List(1)))).thenReturn(Future(true))
-      when(mockHobbyRepository.getHobbiesId(List("Swimming"))).thenReturn(Future(List(List(FOUR))))
+      when(mockUserForms.userUpdateConstraintList).thenReturn(userForms.userUpdateConstraintList.fill(updatedProfile))
+      when(mockUserRepository.updateUserData(updatedProfile,1)).thenReturn(Future(true))
       when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
+      when(mockUserHobbyRepository.deleteUserHobby(1)).thenReturn(Future(true))
+      when(mockHobbyRepository.getHobbiesId(List("Singing"))).thenReturn(Future(List(List(1))))
+      when(mockUserHobbyRepository.addUserHobby(1, List(List(1)))).thenReturn(Future(true))
       val result = call(updateProfileController.updateProfile(), FakeRequest(POST, "/profile").withFormUrlEncodedBody(
-        "name.firstName" -> "jas", "name.middleName" -> "kaur", "name.lastName" -> "kaur", "mobileNumber" -> "9898989898", "gender" -> "female",
-        "age" -> "18","hobbies[4]" -> "Swimming").withSession("userId" -> "1"))
+        "name.firstName" -> "jas", "name.middleName" -> "kaur", "name.lastName" -> "kaur", "mobileNumber" -> "9999999999", "gender" -> "female", "age" -> "18",
+        "hobbies[1]" -> "Singing").withSession("userId"->"1"))
 
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/profile")
 
     }
 
+    "not be able to update profile" in {
 
+      when(mockUserForms.userUpdateConstraintList).thenReturn(userForms.userUpdateConstraintList.fill(updatedProfile))
+      when(mockUserRepository.updateUserData(updatedProfile,1)).thenReturn(Future(false))
+      when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
+      when(mockUserHobbyRepository.deleteUserHobby(1)).thenReturn(Future(true))
+      when(mockHobbyRepository.getHobbiesId(List("Singing"))).thenReturn(Future(List(List(1))))
+      when(mockUserHobbyRepository.addUserHobby(1, List(List(1)))).thenReturn(Future(true))
+      val result = call(updateProfileController.updateProfile(), FakeRequest(POST, "/profile").withFormUrlEncodedBody(
+        "name.firstName" -> "jas", "name.middleName" -> "kaur", "name.lastName" -> "kaur", "mobileNumber" -> "9999999999", "gender" -> "female", "age" -> "18",
+        "hobbies[1]" -> "Singing").withSession("userId"->"1"))
+
+      status(result) mustBe 303
+      redirectLocation(result) mustBe Some("/profile")
+
+    }
+
+    "not be able to delete hobbies" in {
+
+      when(mockUserForms.userUpdateConstraintList).thenReturn(userForms.userUpdateConstraintList.fill(updatedProfile))
+      when(mockUserRepository.updateUserData(updatedProfile,1)).thenReturn(Future(true))
+      when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
+      when(mockUserHobbyRepository.deleteUserHobby(1)).thenReturn(Future(false))
+      when(mockHobbyRepository.getHobbiesId(List("Singing"))).thenReturn(Future(List(List(1))))
+      when(mockUserHobbyRepository.addUserHobby(1, List(List(1)))).thenReturn(Future(true))
+      val result = call(updateProfileController.updateProfile(), FakeRequest(POST, "/profile").withFormUrlEncodedBody(
+        "name.firstName" -> "jas", "name.middleName" -> "kaur", "name.lastName" -> "kaur", "mobileNumber" -> "9999999999", "gender" -> "female", "age" -> "18",
+        "hobbies[1]" -> "Singing").withSession("userId"->"1"))
+
+      status(result) mustBe 303
+      redirectLocation(result) mustBe Some("/profile")
+
+    }
+
+    "not be able to add hobbies in database" in {
+
+      when(mockUserForms.userUpdateConstraintList).thenReturn(userForms.userUpdateConstraintList.fill(updatedProfile))
+      when(mockUserRepository.updateUserData(updatedProfile,1)).thenReturn(Future(true))
+      when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
+      when(mockUserHobbyRepository.deleteUserHobby(1)).thenReturn(Future(true))
+      when(mockHobbyRepository.getHobbiesId(List("Singing"))).thenReturn(Future(List(List(1))))
+      when(mockUserHobbyRepository.addUserHobby(1, List(List(1)))).thenReturn(Future(false))
+      val result = call(updateProfileController.updateProfile(), FakeRequest(POST, "/profile").withFormUrlEncodedBody(
+        "name.firstName" -> "jas", "name.middleName" -> "kaur", "name.lastName" -> "kaur", "mobileNumber" -> "9999999999", "gender" -> "female", "age" -> "18",
+        "hobbies[1]" -> "Singing").withSession("userId"->"1"))
+
+      status(result) mustBe 303
+      redirectLocation(result) mustBe Some("/profile")
+
+    }
   }
-
-}*/
+}
