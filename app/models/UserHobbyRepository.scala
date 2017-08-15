@@ -29,19 +29,7 @@ class UserHobbyRepository @Inject()(protected val dbConfigProvider: DatabaseConf
         }
         else{
           true
-        }
-    )
-    /*
-        val listOfResult: List[Future[Boolean]] = listOfValidHobbyId.map (
-          hobbyID => db.run(hobbyUserQuery += UserHobby(1, email, hobbyId.head)).map(_ > 0)
-        )
-        Future.sequence(listOfResult).map {
-          result =>
-            if (result.contains(false)) false else true*/
-    //Future.sequence(listOfHobby.map(hobby => (db.run(hobbyQuery.filter(_.name == hobby ).map(_.id).to[List].result))))
-
-    //db.run(hobbyUserQuery += ) map (_ > 0)
-
+        })
 
   }
 

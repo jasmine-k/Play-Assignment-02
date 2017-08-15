@@ -40,18 +40,16 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
 
   def getUserId(email: String): Future[Int] = {
     val extractIdQueryResult = db.run(userQuery.filter(_.email === email).to[List].result)
-    extractIdQueryResult.map{ user =>
-        if(user.isEmpty){
-          -1
-        }
-      else{
-          user.head.userId
-        }
-
+    extractIdQueryResult.map { user =>
+      if (user.isEmpty) {
+        -1
+      }
+      else {
+        user.head.userId
+      }
     }
 
   }
-
 
   def checkIfUserExists(email: String, password: String): Future[Boolean] = {
 
@@ -69,49 +67,98 @@ class UserRepository @Inject()(protected val dbConfigProvider: DatabaseConfigPro
     }
   }
 
-  def getUserById(userId: Int) : Future[UserData] ={
+  def getUserById(userId: Int): Future[UserData] = {
     Logger.info("Getting user details from database")
     val userDetailQuery = userQuery.filter(_.userId === userId).to[List].result.head
     db.run(userDetailQuery)
   }
 
-  def checkIfEmailExists(email: String, id: Int): Future[Boolean] ={
+  def checkIfEmailExists(email: String, id: Int): Future[Boolean] = {
     Logger.info("checkUpdatedEmail")
-    val checkUpdatedEmail = db.run(userQuery.filter(_.email === email ).to[List].result)
+    val checkUpdatedEmail = db.run(userQuery.filter(_.email === email).to[List].result)
     checkUpdatedEmail.map { user =>
       if (user.isEmpty) {
         false
       }
       else if (user.head.userId == id) {
-        false
+        true
       }
       else {
-        true
+        false
       }
     }
   }
 
-  def updateUserData(updatedUserData: UpdateUserDetails, userId: Int):Future[Boolean] ={
+  def updateUserData(updatedUserData: UpdateUserDetails, userId: Int): Future[Boolean] = {
     Logger.info("Updating user details in database")
-    db.run(userQuery.filter(_.userId === userId).map(user =>(user.firstName,user.middleName, user.lastName,
-    user.mobileNumber,user.gender, user.age, user.email) ).update(updatedUserData.name.firstName,
+    db.run(userQuery.filter(_.userId === userId).map(user => (user.firstName, user.middleName, user.lastName,
+      user.mobileNumber, user.gender, user.age)).update(updatedUserData.name.firstName,
       updatedUserData.name.middleName, updatedUserData.name.lastName, updatedUserData.mobileNumber,
-      updatedUserData.gender, updatedUserData.age, updatedUserData.email)).map(_>0)
+      updatedUserData.gender, updatedUserData.age)).map(_ > 0)
   }
 
-  def updateUserPassword(email: String, password: String): Future[Boolean]={
+  def updateUserPassword(email: String, password: String): Future[Boolean] = {
     Logger.info("Updating password in database")
-    db.run(userQuery.filter(_.email === email).map(user => (user.password)).update(password)).map(_>0)
+    db.run(userQuery.filter(_.email === email).map(user => (user.password)).update(password)).map(_ > 0)
   }
 
-  def isAdmin(email:String):Future[Boolean]={
+  def isAdmin(email: String): Future[Boolean] = {
     Logger.info("Checking if is admin from database")
-    db.run(userQuery.filter(_.email === email).map(_.isAdmin).result.head)
+    val resultIsAdmin = db.run(userQuery.filter(_.email === email).map(_.isAdmin).result.headOption)
+    resultIsAdmin.map {
+      case Some(isAdmin) =>
+        if (isAdmin) {
+          true
+        }
+        else {
+          false
+        }
+
+      case None => false
+    }
   }
 
-  def isActive(email:String):Future[Boolean]={
+  def isAdminById(userId: Int): Future[Boolean] = {
+    Logger.info("Checking if is admin from database")
+    val resultIsAdmin = db.run(userQuery.filter(_.userId === userId).map(_.isAdmin).result.headOption)
+    resultIsAdmin.map {
+      case Some(isAdmin) =>
+        if (isAdmin) {
+          true
+        }
+        else {
+          false
+        }
+      case None => false
+    }
+
+  }
+
+  def isActive(email: String): Future[Boolean] = {
     Logger.info("Checking if is active from database")
-    db.run(userQuery.filter(_.email === email).map(_.isActive).result.head)
+    val resultIsActive = db.run(userQuery.filter(_.email === email).map(_.isActive).result.headOption)
+    resultIsActive.map {
+      case Some(isActive) =>
+        if (isActive) {
+          true
+        }
+        else {
+          false
+        }
+      case None => false
+    }
+
+  }
+
+  def getNormalUser(): Future[List[UserData]] = {
+
+    Logger.info("Getting normal user")
+    db.run(userQuery.filter(_.isAdmin === false).to[List].result)
+  }
+
+  def updateIsActive(email: String, isActive: Boolean): Future[Boolean] = {
+    Logger.info("Updating isActive field")
+    db.run(userQuery.filter(_.email === email).map(user => user.isActive).update(isActive)).map(_ > 0)
   }
 
 }

@@ -22,12 +22,27 @@ GET     /profile                controllers.Application.updateProfile
 
 GET     /password               controllers.Application.forgotPassword
 
-POST     /                         controllers.AuthenticationController.signUpValidation
+GET     /user               controllers.Application.viewUser
 
-POST     /login                       controllers.AuthenticationController.loginValidation
+GET     /assignment               controllers.Application.viewAssignment
 
-POST    /profile                        controllers.AuthenticationController.updateProfile
+POST     /                         controllers.SignUpController.signUpValidation
 
-POST     /password               controllers.AuthenticationController.updatePassword
+POST     /login                       controllers.LoginController.loginValidation
+
+POST    /profile                        controllers.UpdateProfileController.updateProfile
+
+POST     /password               controllers.UpdatePasswordController.updatePassword
+
+GET    /isactive/:email/:userId/:isActive               controllers.EnableDisableController.enableDisableUser(email:String,userId:Int,isActive:Boolean)
+
+GET    /deleteassignment/:id              controllers.AssignmentController.deleteAssignment(id:Int)
+
+GET    /addassignment              controllers.AssignmentController.addAssignment
+
+POST    /addassignment              controllers.AssignmentController.addAssignment
+
+GET     /logout                     controllers.LogoutController.logout
+
 
 

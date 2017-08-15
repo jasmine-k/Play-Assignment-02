@@ -1,0 +1,31 @@
+@(title: String, listOfAssign: List[AssignmentDetails])(implicit messages: play.api.i18n.Messages,flash: Flash)
+@import helper._
+
+@main(title) {
+
+<h1 align="center">Welcome to Knoldus!</h1>
+
+<table align="center">
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+    </tr>
+    @for(user <- listOfAssign){
+    <tr>
+        <td>
+            @user.title
+        </td>
+
+        <td>
+            @user.title
+        </td>
+
+    </tr>
+    }
+</table>
+@if(listOfAssign.isEmpty){
+<h2 align="Center">No assignment exists!</h2>
+}
+<h2 align="Center">@flash.get("success").getOrElse(flash.get("error"))</h2>
+
+}

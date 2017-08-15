@@ -14,10 +14,11 @@ case class UserLogin(email: String, password: String)
 case class Name(firstName: String, middleName: Option[String], lastName: String)
 
 case class UpdateUserDetails(name: Name, mobileNumber: Long, gender: String,
-                             age: Int, email: String, hobbies: List[String])
+                             age: Int, hobbies: List[String])
 
 case class UpdatePassword(email: String, password: String, confirmPassword: String)
 
+case class Assignment(title:String, description:String)
 
 class UserForms {
 
@@ -91,7 +92,6 @@ class UserForms {
       "mobileNumber" -> longNumber.verifying(mobileNumberValidation),
       "gender" -> text,
       "age" -> number(MIN_AGE,MAX_AGE),
-      "email" -> email,
       "hobbies" -> list(text).verifying(hobbiesValidation)
     )(UpdateUserDetails.apply)(UpdateUserDetails.unapply))
 
@@ -103,4 +103,9 @@ class UserForms {
     )(UpdatePassword.apply)(UpdatePassword.unapply).verifying("Checking for password match", data =>
     data.password == data.confirmPassword))
 
+  val AssignmentConstraintList = Form(
+    mapping(
+      "title" -> nonEmptyText,
+      "description" -> nonEmptyText.verifying("Description size should be 500 characters at max",descp=> descp.length<=500)
+    )(Assignment.apply)(Assignment.unapply))
 }

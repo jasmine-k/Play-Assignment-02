@@ -1,0 +1,17 @@
+@(title: String, AssignmentConstraintList: Form[Assignment] )(implicit messages: play.api.i18n.Messages,flash: Flash)
+
+@import helper._
+
+@main(title) {
+
+<h1>Welcome to Knoldus!</h1>
+
+@helper.form(action = routes.AssignmentController.addAssignment()){
+@helper.inputText(AssignmentConstraintList("title"),
+'_showConstraints-> false,'_label -> "Title")
+@helper.inputText(AssignmentConstraintList("description"),
+'_showConstraints-> false,'_label -> "Description")
+<button value="Submit">Submit</button>
+}
+
+}

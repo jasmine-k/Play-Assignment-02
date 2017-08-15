@@ -13,7 +13,7 @@
 </ul>
 }
 
-@helper.form(action = routes.AuthenticationController.signUpValidation()){
+@helper.form(action = routes.SignUpController.signUpValidation()){
 @helper.inputText(userFormConstraint("name.firstName"),
 '_showConstraints-> false,'_label -> "First Name")
 @helper.inputText(userFormConstraint("name.middleName"),

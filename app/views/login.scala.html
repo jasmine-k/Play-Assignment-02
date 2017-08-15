@@ -4,7 +4,7 @@
 @main(title) {
 <h1>Welcome to Knoldus!</h1>
 
-@helper.form(action = routes.AuthenticationController.loginValidation()){
+@helper.form(action = routes.LoginController.loginValidation()){
 @helper.inputText(userLoginConstraint("email"),
 '_showConstraints-> false)
 @helper.inputPassword(userLoginConstraint("password"),

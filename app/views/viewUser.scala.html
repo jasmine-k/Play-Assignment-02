@@ -1,0 +1,55 @@
+@(title: String, listOfUser: List[UserData])(implicit messages: play.api.i18n.Messages,flash: Flash)
+@import helper._
+
+@main(title) {
+
+<h1 align="center">Welcome to Knoldus!</h1>
+
+<table align="center">
+    <tr>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Last Name</th>
+        <th>Enable</th>
+        <th>Disable</th>
+    </tr>
+    @for(user <- listOfUser){
+    <tr>
+        <td>
+            @user.email
+        </td>
+
+        @if(user.isActive){
+        <td>
+            <button class="btn btn-warning" disabled> Enable</button>
+        </td>
+
+        <td>
+            <button class="btn btn-success"
+                    onclick="location.href='@controllers.routes.EnableDisableController.enableDisableUser(user.email, user.userId,false)';">
+                Disable
+            </button>
+        </td>
+        }else {
+
+        <td>
+            <button class="btn btn-success"
+                    onclick="location.href='@controllers.routes.EnableDisableController.enableDisableUser(user.email,user.userId, true)';">
+                Enable
+            </button>
+        </td>
+
+        <td>
+            <button class="btn btn-warning" disabled> Disable</button>
+        </td>
+        }
+
+    </tr>
+    }
+</table>
+@if(listOfUser.isEmpty){
+<h2 align="Center">No user exists!</h2>
+}
+<h2 align="Center">@flash.get("success").getOrElse(flash.get("error"))</h2>
+
+}

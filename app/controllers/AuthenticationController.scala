@@ -41,13 +41,11 @@ class AuthenticationController @Inject()(val userRepository: UserRepository,
         userData => {
           Logger.info("Checking if user exits!")
           userRepository.checkIfUserExists(userData.email, userData.password).flatMap {
-
             case true =>
               Logger.info("User exits!")
               userRepository.getUserId(userData.email).flatMap {
                 case id: Int if id > 0 =>
                   userRepository.isAdmin(userData.email).flatMap {
-
                     case true =>
                       Logger.info("This is admin")
                       Future.successful(Redirect(routes.Application.updateProfile()).withSession("userId" -> s"$id"))
@@ -61,10 +59,10 @@ class AuthenticationController @Inject()(val userRepository: UserRepository,
                         case false =>
                           Logger.info("It is not active")
                           Redirect(routes.Application.index()).flashing("error" -> "User is currently inactive")
-
                       }
                   }
-                case id: Int if id <= 0 => Future.successful(Redirect(routes.Application.updateProfile()).flashing("error" -> "Something went wrong!")) //Ok(views.html.index())
+                case id: Int if id <= 0 =>
+                  Future.successful(Redirect(routes.Application.updateProfile()).flashing("error" -> "Something went wrong!")) //Ok(views.html.index())
               }
             //Redirect(routes.Application.successLoginMessageDisplay())//.withSession("email"-> s"$userData.email","password" -> s"$userData.password")
             case false =>
@@ -85,7 +83,6 @@ class AuthenticationController @Inject()(val userRepository: UserRepository,
         userData => {
           Logger.info("Form submitted")
           val hashPassword = BCrypt.hashpw(userData.password, BCrypt.gensalt())
-          Logger.info("password len = " + hashPassword.length)
           val newUserData = UserData(1, userData.name.firstName, userData.name.middleName,
             userData.name.lastName, userData.mobileNumber, userData.gender, userData.age, userData.email, hashPassword, false, true)
           val emailValidationResult = userRepository.emailValidation(userData.email)
@@ -101,8 +98,7 @@ class AuthenticationController @Inject()(val userRepository: UserRepository,
                   listOfHobbiesID.flatMap(hobbyId => userRepository.getUserId(userData.email).flatMap(userId =>
                     userHobbyRepository.addUserHobby(userId, hobbyId)).map {
                     case true =>
-                      Redirect(routes.Application.successMessageDisplay()).flashing("success" -> "You are successfully registered")
-                    //.withSession("user" -> "rishabh")
+                      Redirect(routes.Application.index()).flashing("success" -> "You are successfully registered")
                     case false =>
                       Redirect(routes.Application.signUp()).flashing("error" -> "Something went wrong!") //.withSession("user" -> "rishabh")
                   })
@@ -115,98 +111,19 @@ class AuthenticationController @Inject()(val userRepository: UserRepository,
         })
   }
 
-  def updateProfile(): Action[AnyContent] = Action.async {
+  def logout: Action[AnyContent] = Action.async {
     implicit request: Request[AnyContent] =>
-      userForms.userUpdateConstraintList.bindFromRequest.fold(
-        formWithErrors => {
-          hobbyRepository.getHobbies.map(hobbies => BadRequest(views.html.profile("Error", formWithErrors, hobbies)))
-        },
-        userData => {
-          Logger.info("Form submitted")
-          val sessionId = request.session.get("userId")
-          Logger.info(s"Get session in updateProfile(Authentication) $sessionId")
-          sessionId match {
-            case Some(sessionId) =>
-              val newUpdatedUserData = UpdateUserDetails(userData.name, userData.mobileNumber,
-                userData.gender, userData.age, userData.email, userData.hobbies)
-              Logger.info(s"Updated data is $UserData")
-              val ifEmailExists: Future[Boolean] = userRepository.checkIfEmailExists(userData.email, sessionId.toInt)
-              ifEmailExists.flatMap {
-                case true => Future.successful(Redirect(routes.Application.updateProfile())
-                  .flashing("error" -> "Email already exists!").withSession("userId" -> s"$sessionId"))
-                case false =>
-                  userRepository.updateUserData(newUpdatedUserData, sessionId.toInt).flatMap {
-                    case true =>
-                      userHobbyRepository.deleteUserHobby(sessionId.toInt).flatMap {
-                        case true =>
-                          val listOfHobbiesID: Future[List[List[Int]]] = hobbyRepository.getHobbiesId(userData.hobbies)
-                          listOfHobbiesID.flatMap { hobbyId =>
-                            userHobbyRepository.addUserHobby(sessionId.toInt, hobbyId).flatMap {
-                              case true =>
-                                val updatedValues = userForms.userUpdateConstraintList.fill(UpdateUserDetails(
-                                  Name(userData.name.firstName, userData.name.middleName, userData.name.lastName), userData.mobileNumber,
-                                  userData.gender, userData.age, userData.email, userData.hobbies))
-                                hobbyRepository.getHobbies().map {
-                                  hobbies => Ok(views.html.profile("Edit Profile", updatedValues, hobbies)).flashing("success" -> "Profile updated successfully")
-                                }
-                              case false => Future.successful(Redirect(routes.Application.updateProfile())
-                                .flashing("error" -> "Something went wrong!")) //.withSession("user" -> "rishabh")
-                            }
-                          }
-                        case false => Future.successful(Redirect(routes.Application.updateProfile())
-                          .flashing("error" -> "Something went wrong!")) //.withSession("user" -> "rishabh"))
-                      }
-                    case false =>
-                      Future.successful(Redirect(routes.Application.updateProfile()).flashing("error" -> "Something went wrong!"))
-                  }
-              }
-            case None =>
-              Logger.info("Session does not exits")
-              Future.successful(Ok(views.html.index()))
-          }
-        })
+
+      val userId = request.session.get("userId")
+      userId match {
+        case Some(_) =>
+          Logger.info("Successfully logged out")
+          Future.successful(Redirect(routes.Application.index()).withNewSession.flashing("success" -> "You have logged out!"))
+        case None =>
+          Logger.info("Error occurred while logout")
+          Future.successful(Redirect(routes.Application.index()).flashing("error" -> "Something went wrong!"))
+
+      }
   }
-
-  def updatePassword(): Action[AnyContent] = Action.async {
-    implicit request: Request[AnyContent] =>
-      userForms.UpdatePasswordConstraintList.bindFromRequest.fold(
-        formWithErrors => {
-          Future.successful(BadRequest(views.html.forgotPassword("Error", formWithErrors)))
-        },
-        userData => {
-          Logger.info("Checking if user exits!")
-          userRepository.getUserId(userData.email).flatMap {
-
-            case id: Int if (id > 0) => {
-              Logger.info("User exits!")
-              /* userRepository.getUserId(userData.email).flatMap {
-                 case id: Int =>{*/
-              Logger.info("Updating Password " + userData.password)
-              val hashPassword = BCrypt.hashpw(userData.password, BCrypt.gensalt())
-              userRepository.updateUserPassword(userData.email, hashPassword).map {
-                case true =>
-                  Logger.info("Update password pass")
-
-                  Redirect(routes.Application.loginPage()).flashing("success" -> "Password updated successfully")
-                case false =>
-                  Logger.info("Update password fail")
-                  Ok(views.html.index())
-              }
-              // }
-              // Redirect(routes.Application.loginPage()).flashing("success" -> s"Password updated successfully")
-              /* case _ => Future.successful(Ok(views.html.index())) //forgotPassword("Forgot Password",userData))
-
-             }*/
-            }
-            //Redirect(routes.Application.successLoginMessageDisplay())//.withSession("email"-> s"$userData.email","password" -> s"$userData.password")
-            case id: Int if (id <= 0) =>
-              Logger.info("User does not exists")
-              Future.successful(Redirect(routes.Application.loginPage())) //.flashing("error","Incorrect Email or Password")))
-          }
-
-        })
-
-  }
-
 
 }

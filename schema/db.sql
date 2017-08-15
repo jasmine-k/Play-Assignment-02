@@ -38,3 +38,13 @@ INSERT INTO hobby VALUES
 (3, 'Travelling'),
 (4, 'Swimming'),
 (5, 'Sports');
+
+
+CREATE TABLE IF NOT EXISTS assignment(
+
+id serial NOT NULL,
+title VARCHAR(25) NOT NULL,
+description VARCHAR(500) NOT NULL,
+
+PRIMARY KEY(id)
+);

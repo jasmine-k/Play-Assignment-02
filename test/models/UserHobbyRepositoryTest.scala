@@ -1,19 +1,40 @@
 package models
 
-import org.scalatest.FunSuite
 import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 
 class UserHobbyRepositoryTest extends PlaySpec with MockitoSugar {
-/*
-  val userRepository = new ModelsTest[UserRepository]
-  val newUserData = UserData(1,"jas", Option("kaur"), "kaur",
-    9898989898L, "female", 18, "jas@gmail.com", "jasmine", false, true)
 
-  "authenticationController" should {
-    "be able to sign up new user" in {
-      val storeResult = userRepository.result(userRepository.repository.addNewUser(newUserData))
-      storeResult mustBe(true)
+  val listOfUserHobbies = List("Singing","Dancing","Swimming","Sports")
+  val id1 =1
+  val id2 =2
+  val id3 = 3
+  val id4 = 4
+  val id5 = 5
+  val listOfUserHobbiesId = List(List(id1),List(id2),List(id4),List(id5))
+  val userHobbyRepository = new ModelsTest[UserHobbyRepository]
+  "User Hobby Repository" should {
+
+    "be able to add list of hobbies of the user" in {
+      val testResult = userHobbyRepository.result(userHobbyRepository.repository.addUserHobby(1,listOfUserHobbiesId))
+      testResult mustBe (true)
     }
-  }*/
+
+    "be able to get list of hobbies of the user" in {
+      val testResult = userHobbyRepository.result(userHobbyRepository.repository.getUserHobby(1))
+      testResult mustBe (listOfUserHobbies)
+    }
+
+    "be able to delete list of hobbies of the user" in {
+      val testResult = userHobbyRepository.result(userHobbyRepository.repository.deleteUserHobby(1))
+      testResult mustBe (true)
+    }
+
+    "not be able to delete list of hobbies of the user due to incorrect userId" in {
+      val testResult = userHobbyRepository.result(userHobbyRepository.repository.deleteUserHobby(1))
+      testResult mustBe (false)
+    }
+
+  }
+
 }
