@@ -36,7 +36,7 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
 
     "be able to login new user who is Active but not Admin" in {
 
-      when(mockUserForms.UserLoginConstraintList).thenReturn(userForms.UserLoginConstraintList.fill(newUserToLogin))
+      when(mockUserForms.userLoginConstraintList).thenReturn(userForms.userLoginConstraintList.fill(newUserToLogin))
       when(mockUserRepository.checkIfUserExists("jas@gmail.com", "jasmine")).thenReturn(Future(true))
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(1))
       when(mockUserRepository.isAdmin("jas@gmail.com")).thenReturn(Future(false))
@@ -51,7 +51,7 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
 
     "not be able to login new user because user does not exists" in {
 
-      when(mockUserForms.UserLoginConstraintList).thenReturn(userForms.UserLoginConstraintList.fill(newUserToLogin))
+      when(mockUserForms.userLoginConstraintList).thenReturn(userForms.userLoginConstraintList.fill(newUserToLogin))
       when(mockUserRepository.checkIfUserExists("jas@gmail.com", "jasmine")).thenReturn(Future(false))
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(1))
       when(mockUserRepository.isAdmin("jas@gmail.com")).thenReturn(Future(false))
@@ -66,7 +66,7 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
 
     "not be able to login new user because user id is negative" in {
 
-      when(mockUserForms.UserLoginConstraintList).thenReturn(userForms.UserLoginConstraintList.fill(newUserToLogin))
+      when(mockUserForms.userLoginConstraintList).thenReturn(userForms.userLoginConstraintList.fill(newUserToLogin))
       when(mockUserRepository.checkIfUserExists("jas@gmail.com", "jasmine")).thenReturn(Future(true))
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(-1))
       when(mockUserRepository.isAdmin("jas@gmail.com")).thenReturn(Future(false))
@@ -81,7 +81,7 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
 
     "not be able to login new user because user is inactive" in {
 
-      when(mockUserForms.UserLoginConstraintList).thenReturn(userForms.UserLoginConstraintList.fill(newUserToLogin))
+      when(mockUserForms.userLoginConstraintList).thenReturn(userForms.userLoginConstraintList.fill(newUserToLogin))
       when(mockUserRepository.checkIfUserExists("jas@gmail.com", "jasmine")).thenReturn(Future(true))
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(1))
       when(mockUserRepository.isAdmin("jas@gmail.com")).thenReturn(Future(false))
@@ -96,7 +96,7 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
 
     "be able to login new user who is admin" in {
 
-      when(mockUserForms.UserLoginConstraintList).thenReturn(userForms.UserLoginConstraintList.fill(newUserToLogin))
+      when(mockUserForms.userLoginConstraintList).thenReturn(userForms.userLoginConstraintList.fill(newUserToLogin))
       when(mockUserRepository.checkIfUserExists("jas@gmail.com", "jasmine")).thenReturn(Future(true))
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(1))
       when(mockUserRepository.isAdmin("jas@gmail.com")).thenReturn(Future(true))

@@ -38,7 +38,8 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
 
   def loginPage(): Action[AnyContent] = Action.async { implicit request =>
 
-    Future.successful(Ok(views.html.login("Login", userForms.UserLoginConstraintList)))
+    val loginForm = userForms.userLoginConstraintList
+    Future.successful(Ok(views.html.login("Login", loginForm)))
 
   }
 
@@ -48,22 +49,10 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
 
   }
 
-  def successLoginMessageDisplay(): Action[AnyContent] = Action.async { implicit request =>
-
-   Future.successful(Ok(views.html.successLoginMessage("Welcome!")))
-
-  }
-
-  def successMessageDisplay(): Action[AnyContent] = Action.async { implicit request =>
-
-    Future.successful(Ok(views.html.successMessage("Welcome!")))
-
-  }
-
   def forgotPassword(): Action[AnyContent] = Action.async { implicit request =>
 
-    Future.successful(Ok(views.html.forgotPassword("Welcome!", userForms.UpdatePasswordConstraintList)))
-
+    val passwordForm = userForms.updatePasswordConstraintList
+    Future.successful(Ok(views.html.forgotPassword("Welcome!", passwordForm)))
   }
 
   def adminProfile(): Action[AnyContent] = Action.async { implicit request =>
@@ -84,11 +73,9 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
     val userIdInString: Option[String] = request.session.get("userId")
     Logger.info(s"Get session in updateProfile(Application) $userIdInString")
     userIdInString match {
-      case Some(userIdInString) => {
-
-        val userId: Int = userIdInString.toInt
+      case Some(userIdValue) => {
+        val userId: Int = userIdValue.toInt
         val userDetails: Future[UserData] = userRepository.getUserById(userId)
-
         userDetails.flatMap(userData =>
           userData match {
             case userData: UserData =>
@@ -104,9 +91,10 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
                     val updateUserFormValue: Form[UpdateUserDetails] = userForms.userUpdateConstraintList.fill(UpdateUserDetails(
                       Name(userData.firstName, userData.middleName, userData.lastName), userData.mobileNumber,
                       userData.gender, userData.age, userListOfHobby))
-                    hobbyRepository.getHobbies().map {
+                    hobbyRepository.getHobbies().flatMap {
                       hobbies =>
-                        Ok(views.html.profile("Edit Profile", updateUserFormValue, hobbies))
+                        userRepository.isAdmin(userData.email).map( isAdminResult =>
+                        Ok(views.html.profile("Edit Profile", updateUserFormValue, hobbies, isAdminResult)))
                     }
                 }
               }
@@ -132,42 +120,39 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
     val userIdInString: Option[String] = request.session.get("userId")
     Logger.info(s"Get session in updateProfile(Application) $userIdInString")
     userIdInString match {
-      case Some(userIdInString) => {
-
-        val userId: Int = userIdInString.toInt
+      case Some(userIdValue) => {
+        val userId: Int = userIdValue.toInt
         userRepository.getUserById(userId).flatMap {
           case user: UserData =>
-            assignmentRepository.getAssignments.flatMap{
+            assignmentRepository.getAssignments.flatMap {
               case assignmentList: List[AssignmentDetails] =>
                 Logger.info("assign:" + assignmentList)
-            userRepository.isAdminById(userId).map{
-              case true =>
-                Logger.info("Showing assignment with delete option to the admin")
-             //   Ok(views.html.index())
-               Ok(views.html.showAssignmentToAdmin("Welcome",assignmentList))
-              case false =>
-                Logger.info("Showing assignment to the normal user")
-               // Ok(views.html.index())
-                Ok(views.html.showAssignmentToUser("Welcome",assignmentList))
-            }
+                userRepository.isAdminById(userId).map {
+                  case true =>
+                    Logger.info("Showing assignment with delete option to the admin")
+                    Ok(views.html.showAssignmentToAdmin("Welcome", assignmentList))
+                  case false =>
+                    Logger.info("Showing assignment to the normal user")
+                    Ok(views.html.showAssignmentToUser("Welcome", assignmentList))
+                }
               case _ =>
                 Logger.info("Assignment did not received")
                 Future.successful(Redirect(routes.Application.index()).flashing("error" -> "Something went wrong"))
-
-
             }
-          case _=>
+          case _ =>
             Logger.info("Invalid user id")
             Future.successful(Redirect(routes.Application.index()).flashing("error" -> "User doesnot exists"))
-
         }
       }
+      case None =>
+        Future.successful(Redirect(routes.Application.index()).flashing("error" -> "You need to login"))
+
     }
 
   }
 
   def addAssignment(): Action[AnyContent] = Action.async { implicit request =>
 
-    Future.successful(Ok(views.html.addAssignment("Welcome!", userForms.AssignmentConstraintList)))
+    Future.successful(Ok(views.html.addAssignment("Welcome!", userForms.assignmentConstraintList)))
   }
 }

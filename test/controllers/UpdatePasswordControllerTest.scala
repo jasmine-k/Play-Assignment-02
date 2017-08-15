@@ -32,7 +32,7 @@ class UpdatePasswordControllerTest extends PlaySpec with MockitoSugar with Guice
 
     "be able to update password" in {
 
-      when(mockUserForms.UpdatePasswordConstraintList).thenReturn(userForms.UpdatePasswordConstraintList.fill(userUpdatedPassword))
+      when(mockUserForms.updatePasswordConstraintList).thenReturn(userForms.updatePasswordConstraintList.fill(userUpdatedPassword))
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(1))
       when(mockUserRepository.updateUserPassword(ArgumentMatchers.any(classOf[String]), ArgumentMatchers.any(classOf[String]))).thenReturn(Future(true))
       val result = call(updatePasswordController.updatePassword(), FakeRequest(POST, "/password").withFormUrlEncodedBody(
@@ -45,7 +45,7 @@ class UpdatePasswordControllerTest extends PlaySpec with MockitoSugar with Guice
 
     "not be able to update password in the table" in {
 
-      when(mockUserForms.UpdatePasswordConstraintList).thenReturn(userForms.UpdatePasswordConstraintList.fill(userUpdatedPassword))
+      when(mockUserForms.updatePasswordConstraintList).thenReturn(userForms.updatePasswordConstraintList.fill(userUpdatedPassword))
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(1))
       when(mockUserRepository.updateUserPassword(ArgumentMatchers.any(classOf[String]), ArgumentMatchers.any(classOf[String]))).thenReturn(Future(false))
       val result = call(updatePasswordController.updatePassword(), FakeRequest(POST, "/password").withFormUrlEncodedBody(
@@ -58,7 +58,7 @@ class UpdatePasswordControllerTest extends PlaySpec with MockitoSugar with Guice
 
     "not be able to update password in the table because user does not exists" in {
 
-      when(mockUserForms.UpdatePasswordConstraintList).thenReturn(userForms.UpdatePasswordConstraintList.fill(userUpdatedPassword))
+      when(mockUserForms.updatePasswordConstraintList).thenReturn(userForms.updatePasswordConstraintList.fill(userUpdatedPassword))
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(-1))
       when(mockUserRepository.updateUserPassword(ArgumentMatchers.any(classOf[String]), ArgumentMatchers.any(classOf[String]))).thenReturn(Future(false))
       val result = call(updatePasswordController.updatePassword(), FakeRequest(POST, "/password").withFormUrlEncodedBody(

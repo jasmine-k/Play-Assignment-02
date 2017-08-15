@@ -38,6 +38,7 @@ class UpdateProfileControllerTest extends PlaySpec with MockitoSugar with GuiceO
 
       when(mockUserForms.userUpdateConstraintList).thenReturn(userForms.userUpdateConstraintList.fill(updatedProfile))
       when(mockUserRepository.updateUserData(updatedProfile,1)).thenReturn(Future(true))
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
       when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
       when(mockUserHobbyRepository.deleteUserHobby(1)).thenReturn(Future(true))
       when(mockHobbyRepository.getHobbiesId(List("Singing"))).thenReturn(Future(List(List(1))))
@@ -55,6 +56,7 @@ class UpdateProfileControllerTest extends PlaySpec with MockitoSugar with GuiceO
 
       when(mockUserForms.userUpdateConstraintList).thenReturn(userForms.userUpdateConstraintList.fill(updatedProfile))
       when(mockUserRepository.updateUserData(updatedProfile,1)).thenReturn(Future(false))
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
       when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
       when(mockUserHobbyRepository.deleteUserHobby(1)).thenReturn(Future(true))
       when(mockHobbyRepository.getHobbiesId(List("Singing"))).thenReturn(Future(List(List(1))))
@@ -72,6 +74,7 @@ class UpdateProfileControllerTest extends PlaySpec with MockitoSugar with GuiceO
 
       when(mockUserForms.userUpdateConstraintList).thenReturn(userForms.userUpdateConstraintList.fill(updatedProfile))
       when(mockUserRepository.updateUserData(updatedProfile,1)).thenReturn(Future(true))
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
       when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
       when(mockUserHobbyRepository.deleteUserHobby(1)).thenReturn(Future(false))
       when(mockHobbyRepository.getHobbiesId(List("Singing"))).thenReturn(Future(List(List(1))))
@@ -91,6 +94,7 @@ class UpdateProfileControllerTest extends PlaySpec with MockitoSugar with GuiceO
       when(mockUserRepository.updateUserData(updatedProfile,1)).thenReturn(Future(true))
       when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
       when(mockUserHobbyRepository.deleteUserHobby(1)).thenReturn(Future(true))
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
       when(mockHobbyRepository.getHobbiesId(List("Singing"))).thenReturn(Future(List(List(1))))
       when(mockUserHobbyRepository.addUserHobby(1, List(List(1)))).thenReturn(Future(false))
       val result = call(updateProfileController.updateProfile(), FakeRequest(POST, "/profile").withFormUrlEncodedBody(

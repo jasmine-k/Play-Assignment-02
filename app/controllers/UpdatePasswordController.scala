@@ -32,7 +32,7 @@ class UpdatePasswordController @Inject()(val userRepository: UserRepository,
 
   def updatePassword(): Action[AnyContent] = Action.async {
     implicit request: Request[AnyContent] =>
-      userForms.UpdatePasswordConstraintList.bindFromRequest.fold(
+      userForms.updatePasswordConstraintList.bindFromRequest.fold(
         formWithErrors => {
           Future.successful(BadRequest(views.html.forgotPassword("Error", formWithErrors)))
         },

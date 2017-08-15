@@ -34,7 +34,11 @@ class UpdateProfileController @Inject()(val userRepository: UserRepository,
     implicit request: Request[AnyContent] =>
       userForms.userUpdateConstraintList.bindFromRequest.fold(
         formWithErrors => {
-          hobbyRepository.getHobbies.map(hobbies => BadRequest(views.html.profile("Error", formWithErrors, hobbies)))
+          val sessionId = request.session.get("userId")
+          sessionId match {
+            case Some(id)=> userRepository.isAdminById(id.toInt).flatMap(isAdmin=>
+          hobbyRepository.getHobbies.map(hobbies => BadRequest(views.html.profile("Error", formWithErrors, hobbies,isAdmin))))
+          }
         },
         userData => {
           Logger.info("Form submitted")

@@ -34,7 +34,7 @@ class LoginController @Inject()(val userRepository: UserRepository,
 
   def loginValidation(): Action[AnyContent] = Action.async {
     implicit request: Request[AnyContent] =>
-      userForms.UserLoginConstraintList.bindFromRequest.fold(
+      userForms.userLoginConstraintList.bindFromRequest.fold(
         formWithErrors => {
           Future.successful(BadRequest(views.html.login("Error", formWithErrors)))
         },

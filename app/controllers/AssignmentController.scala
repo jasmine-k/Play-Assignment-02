@@ -30,13 +30,6 @@ class AssignmentController @Inject()(val userRepository: UserRepository,
 
   implicit val messages = messagesApi
 
-  def addAssignment(assignmentId: Int): Action[AnyContent] = Action.async {
-    implicit request: Request[AnyContent] =>
-
-      Future.successful(Redirect(routes.Application.viewUser()).flashing("error" -> "Something went wrong"))
-
-  }
-
   def deleteAssignment(assignmentId: Int): Action[AnyContent] = Action.async {
     implicit request: Request[AnyContent] =>
 
@@ -47,7 +40,6 @@ class AssignmentController @Inject()(val userRepository: UserRepository,
           userRepository.isAdminById(adminId.toInt).flatMap {
             case true =>
               assignmentRepository.deleteAssignment(assignmentId).map {
-
                 case true =>
                   Logger.info("Assignment deleted successfully")
                   Redirect(routes.Application.viewAssignment()).flashing("success" -> "Assignment deleted successfully")
@@ -55,7 +47,7 @@ class AssignmentController @Inject()(val userRepository: UserRepository,
                   Logger.info("Something went wrong")
                   Redirect(routes.Application.viewAssignment()).flashing("error" -> "Something went wrong")
               }
-            case false => Future.successful(Redirect(routes.Application.index()).flashing("error" -> "You are not admin")) //-------session destroy
+            case false => Future.successful(Redirect(routes.Application.viewAssignment()).flashing("error" -> "You are not admin"))
 
           }
         case None => Future.successful(Redirect(routes.Application.index()).flashing("error" -> "You need to login first"))
@@ -64,7 +56,7 @@ class AssignmentController @Inject()(val userRepository: UserRepository,
 
   def addAssignment(): Action[AnyContent] = Action.async {
     implicit request: Request[AnyContent] =>
-      userForms.AssignmentConstraintList.bindFromRequest.fold(
+      userForms.assignmentConstraintList.bindFromRequest.fold(
         formWithErrors => {
           Future.successful(BadRequest(views.html.addAssignment("Error", formWithErrors)))
         },
@@ -77,7 +69,6 @@ class AssignmentController @Inject()(val userRepository: UserRepository,
                 case true =>
                   val newAssignment = AssignmentDetails(1,assignmentDetails.title, assignmentDetails.description)
                   assignmentRepository.addAssignment(newAssignment).map {
-
                     case true =>
                       Logger.info("Assignment added successfully")
                       Redirect(routes.Application.viewAssignment()).flashing("success" -> "Assignment added successfully") //-----redirect
@@ -85,7 +76,7 @@ class AssignmentController @Inject()(val userRepository: UserRepository,
                       Logger.info("Something went wrong")
                       Redirect(routes.Application.viewAssignment()).flashing("error" -> "Something went wrong")//redirect
                   }
-                case false => Future.successful(Redirect(routes.Application.index()).flashing("error" -> "You are not admin")) //-------session destroy
+                case false => Future.successful(Redirect(routes.Application.viewAssignment()).flashing("error" -> "You are not admin")) //-------session destroy
 
               }
             case None => Future.successful(Redirect(routes.Application.index()).flashing("error" -> "You need to login first"))

@@ -12,11 +12,7 @@ GET    /index                                controllers.Application.index
 
 GET    /                                controllers.Application.signUp
 
-GET     /home                           controllers.Application.successMessageDisplay
-
 GET    /login                            controllers.Application.loginPage
-
-GET     /successpage                      controllers.Application.successLoginMessageDisplay
 
 GET     /profile                controllers.Application.updateProfile
 
@@ -38,7 +34,7 @@ GET    /isactive/:email/:userId/:isActive               controllers.EnableDisabl
 
 GET    /deleteassignment/:id              controllers.AssignmentController.deleteAssignment(id:Int)
 
-GET    /addassignment              controllers.AssignmentController.addAssignment
+GET    /addassignment              controllers.Application.addAssignment
 
 POST    /addassignment              controllers.AssignmentController.addAssignment
 

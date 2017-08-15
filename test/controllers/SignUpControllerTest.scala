@@ -28,7 +28,7 @@ class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneServe
   val signUpController = new SignUpController(mockUserRepository, mockUserForms, mockHobbyRepository,
     mockUserHobbyRepository, mockMessagesApi)
 
-  val mobile = 9898989898L
+  val mobile = 9999999999L
   val age = 18
   val name = Name("jas", Option("kaur"), "kaur")
   val newUserDataWithoutId = User(name, mobile, "female", age, "jas@gmail.com", "jasmine", "jasmine", List("Singing", "Dancing"))

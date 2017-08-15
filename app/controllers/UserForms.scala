@@ -77,7 +77,7 @@ class UserForms {
     })
   }
 
-  val UserLoginConstraintList = Form(
+  val userLoginConstraintList = Form(
     mapping(
       "email" -> email,
       "password" -> text.verifying(passwordValidation)
@@ -95,7 +95,7 @@ class UserForms {
       "hobbies" -> list(text).verifying(hobbiesValidation)
     )(UpdateUserDetails.apply)(UpdateUserDetails.unapply))
 
-  val UpdatePasswordConstraintList = Form(
+  val updatePasswordConstraintList = Form(
     mapping(
       "email" -> email,
       "password" -> text.verifying(passwordValidation),
@@ -103,7 +103,7 @@ class UserForms {
     )(UpdatePassword.apply)(UpdatePassword.unapply).verifying("Checking for password match", data =>
     data.password == data.confirmPassword))
 
-  val AssignmentConstraintList = Form(
+  val assignmentConstraintList = Form(
     mapping(
       "title" -> nonEmptyText,
       "description" -> nonEmptyText.verifying("Description size should be 500 characters at max",descp=> descp.length<=500)
