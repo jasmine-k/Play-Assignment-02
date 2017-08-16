@@ -8,12 +8,14 @@ import org.scalatestplus.play.PlaySpec
 class UserRepositoryTest extends PlaySpec with MockitoSugar {
 
   val userRepository = new ModelsTest[UserRepository]
+  val password = "jasmine"
+  val hashPassword = BCrypt.hashpw(password, BCrypt.gensalt())
   val newUserData = UserData(1, "jas", Option("kaur"), "kaur",
-    9898989898L, "female", 18, "jas@gmail.com", "jasmine", false, true)
+    9898989898L, "female", 18, "jas@gmail.com", hashPassword, false, true)
   val newAdminData = UserData(2, "Sim", Option("kaur"), "kaur",
-    9898989898L, "female", 18, "sim@gmail.com", "jasmine", true, true)
+    9898989898L, "female", 18, "sim@gmail.com", hashPassword, true, true)
   val inactiveUserData = UserData(3, "ruby", Option("kaur"), "kaur",
-    9898989898L, "female", 18, "ruby@gmail.com", "jasmine", false, false)
+    9898989898L, "female", 18, "ruby@gmail.com", hashPassword, false, false)
   val updatedUserData = UpdateUserDetails(Name("jas", Option("kaur"), "kaur"),
     9898989898L, "female", 21, List("Swimming"))
 
@@ -44,11 +46,11 @@ class UserRepositoryTest extends PlaySpec with MockitoSugar {
       testResult mustBe (None)
     }
 
-    /*"be able to check if user exists with incorrect password" in {
+    "be able to check if user exists with correct details" in {
 
-      val testResult = userRepository.result(userRepository.repository.checkIfUserExists("jas@gmail.com",hashPassword))
+      val testResult = userRepository.result(userRepository.repository.checkIfUserExists("jas@gmail.com",password))
       testResult mustBe(true)
-    }*/
+    }
 
     "be able to check if user exists with incorrect email" in {
       val testResult = userRepository.result(userRepository.repository.checkIfUserExists("jasmine@gmail.com", "jasmine"))
