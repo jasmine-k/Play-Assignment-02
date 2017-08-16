@@ -5,13 +5,13 @@ import org.scalatestplus.play.PlaySpec
 
 class UserHobbyRepositoryTest extends PlaySpec with MockitoSugar {
 
-  val listOfUserHobbies = List("Singing","Dancing","Swimming","Sports")
+  val listOfUserHobbies = List("Singing","Dancing","Travelling","Swimming","Sports")
   val id1 =1
   val id2 =2
   val id3 = 3
   val id4 = 4
   val id5 = 5
-  val listOfUserHobbiesId = List(List(id1),List(id2),List(id4),List(id5))
+  val listOfUserHobbiesId = List(List(id1),List(id2),List(id3),List(id4),List(id5))
   val userHobbyRepository = new ModelsTest[UserHobbyRepository]
   "User Hobby Repository" should {
 

@@ -1,0 +1,87 @@
+h2
+{
+text-align: center
+}
+.navbar{
+margin-bottom : 0px;
+height
+}
+
+.top-div{
+margin-left : 0px;
+
+}
+
+
+#main-img{
+background: url("../images/main-img.png") no-repeat;
+height: 300px;
+width: 100%;
+background-size: cover;
+}
+
+.textdisplay{
+
+text-align: center;
+}
+
+.inner-text{
+text-align:left
+}
+
+.services-right{
+text-align: right;
+background-color: Black;
+color: White;
+height: 338px;
+
+}
+
+.btn{
+background-color: Blue;
+color: White;
+}
+
+.consult{
+text-align: left;
+background-color: Black;
+
+}
+
+.service-left{
+background-color:Grey
+}
+
+.container-fluid{
+margin-left: 0px;
+margin-right: 0px;
+background-size: cover;
+width: 100%;
+padding: 0px;
+}
+
+#logo{
+height:30px;
+width:50px;
+}
+
+.btn-book-now{
+height: 40px;
+width: 150px;
+}
+
+#send-now{
+background-color: Blue;
+color: White;
+}
+
+.img{
+width:100%;
+}
+
+.img-outer{
+padding-top: 0px;
+padding-left: 0px;
+padding-right: 0px;
+padding-bottom: 0px;
+}

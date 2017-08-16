@@ -5,6 +5,7 @@ import play.api.Logger
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import play.api.mvc.Controller
 import slick.driver.JdbcProfile
+import slick.lifted.ProvenShape
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -44,13 +45,13 @@ trait AssignmentRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class AssignmentTable(tag: Tag) extends Table[AssignmentDetails](tag, "assignment") { //tag->table name
 
-    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    def id:Rep[Int] = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
-    def title = column[String]("title")
+    def title:Rep[String] = column[String]("title")
 
-    def description = column[String]("description")
+    def description:Rep[String] = column[String]("description")
 
-    def * = (id, title, description) <> (AssignmentDetails.tupled, AssignmentDetails.unapply)
+    def * : ProvenShape[AssignmentDetails]  = (id, title, description) <> (AssignmentDetails.tupled, AssignmentDetails.unapply)
   }
 
 }

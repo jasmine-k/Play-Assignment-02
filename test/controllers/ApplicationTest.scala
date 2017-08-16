@@ -100,6 +100,17 @@ class ApplicationTest extends PlaySpec with MockitoSugar with GuiceOneServerPerS
       status(result) mustBe 200
     }
 
+    "not be able to show view assignment page for normal user due to session problem" in {
+
+      val assignmentOneDetails = AssignmentDetails(1,"Assignment1","Description1")
+      val assignmentTwoDetails = AssignmentDetails(2,"Assignment2","Description2")
+      when(mockUserRepository.getUserById(1)).thenReturn(Future(newUser))
+      when(mockAssignmentRepository.getAssignments).thenReturn(Future(List(assignmentOneDetails,assignmentTwoDetails)))
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(false))
+      val result = call(application.viewAssignment(), FakeRequest(GET, "/assignment").withSession())
+      status(result) mustBe 303
+    }
+
     "be able to show view assignment page for admin" in {
 
       val assignmentOneDetails = AssignmentDetails(1,"Assignment1","Description1")
@@ -109,6 +120,17 @@ class ApplicationTest extends PlaySpec with MockitoSugar with GuiceOneServerPerS
       when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
       val result = call(application.viewAssignment(), FakeRequest(GET, "/assignment").withSession("userId"->"1"))
       status(result) mustBe 200
+    }
+
+    "not be able to show view assignment page for admin due to session problem" in {
+
+      val assignmentOneDetails = AssignmentDetails(1,"Assignment1","Description1")
+      val assignmentTwoDetails = AssignmentDetails(2,"Assignment2","Description2")
+      when(mockUserRepository.getUserById(1)).thenReturn(Future(newUser))
+      when(mockAssignmentRepository.getAssignments).thenReturn(Future(List(assignmentOneDetails,assignmentTwoDetails)))
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
+      val result = call(application.viewAssignment(), FakeRequest(GET, "/assignment").withSession())
+      status(result) mustBe 303
     }
 
     "be able to show update profile" in {
@@ -121,6 +143,16 @@ class ApplicationTest extends PlaySpec with MockitoSugar with GuiceOneServerPerS
       status(result) mustBe 200
     }
 
+    "not be able to show update profile due to session" in {
+
+      when(mockUserRepository.getUserById(1)).thenReturn(Future(newUser))
+      when(mockUserHobbyRepository.getUserHobby(1)).thenReturn(Future(List("Signing")))
+      when(mockUserForms.userUpdateConstraintList).thenReturn(userForms.userUpdateConstraintList)
+      when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
+      val result = call(application.viewAssignment(), FakeRequest(GET, "/profile").withSession())
+      status(result) mustBe 303
+    }
+
     "not be able to show update profile" in {
 
       when(mockUserRepository.getUserById(1)).thenReturn(Future(newUser))
@@ -129,6 +161,17 @@ class ApplicationTest extends PlaySpec with MockitoSugar with GuiceOneServerPerS
       when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
       val result = call(application.viewAssignment(), FakeRequest(GET, "/profile").withSession("userId"->"1"))
       status(result) mustBe 200
+    }
+
+
+    "not be able to show update profile due to session problem" in {
+
+      when(mockUserRepository.getUserById(1)).thenReturn(Future(newUser))
+      when(mockUserHobbyRepository.getUserHobby(1)).thenReturn(Future(List()))
+      when(mockUserForms.userUpdateConstraintList).thenReturn(userForms.userUpdateConstraintList)
+      when(mockHobbyRepository.getHobbies()).thenReturn(Future(List("Singing", "Dancing", "Travelling", "Swimming", "Sports")))
+      val result = call(application.viewAssignment(), FakeRequest(GET, "/profile").withSession())
+      status(result) mustBe 303
     }
 
   }

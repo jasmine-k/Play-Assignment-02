@@ -55,12 +55,6 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
     Future.successful(Ok(views.html.forgotPassword("Welcome!", passwordForm)))
   }
 
-  def adminProfile(): Action[AnyContent] = Action.async { implicit request =>
-
-    Future.successful(Ok(views.html.index())) //-------left
-
-  }
-
   def viewUser(): Action[AnyContent] = Action.async { implicit request =>
 
     Logger.info("Displaying user information to admin")
@@ -98,10 +92,6 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
                     }
                 }
               }
-            case _ =>
-              Logger.info("No data found for the given user-id")
-              Logger.info("Redirecting to Welcome Page")
-              Future.successful(Ok(views.html.index()))
           }
         )
       }
@@ -135,13 +125,7 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
                     Logger.info("Showing assignment to the normal user")
                     Ok(views.html.showAssignmentToUser("Welcome", assignmentList))
                 }
-              case _ =>
-                Logger.info("Assignment did not received")
-                Future.successful(Redirect(routes.Application.index()).flashing("error" -> "Something went wrong"))
             }
-          case _ =>
-            Logger.info("Invalid user id")
-            Future.successful(Redirect(routes.Application.index()).flashing("error" -> "User doesnot exists"))
         }
       }
       case None =>

@@ -3,7 +3,7 @@
 
 @main(title) {
 
-<h1>Welcome to Knoldus!</h1>
+<h1 align="center">Welcome to Knoldus!</h1>
 
 @if(userFormConstraint.hasGlobalErrors) {
 <ul>
@@ -12,6 +12,7 @@
     }
 </ul>
 }
+<div align="center">
 
 @helper.form(action = routes.SignUpController.signUpValidation()){
 @helper.inputText(userFormConstraint("name.firstName"),
@@ -36,7 +37,7 @@
 '_label -> "Hobbies")
 
 <button value="Submit">Submit</button>
-
+</div>
 }
 <h2>@flash.get("success").getOrElse(flash.get("error"))</h2>
 

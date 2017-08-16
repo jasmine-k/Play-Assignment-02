@@ -2,17 +2,19 @@
 @import helper._
 
 @main(title) {
-<h1>Welcome to Knoldus!</h1>
-
+<h1 align="center">Welcome to Knoldus!</h1>
+<div align="center">
 @helper.form(action = routes.LoginController.loginValidation()){
 @helper.inputText(userLoginConstraint("email"),
-'_showConstraints-> false)
+'_showConstraints-> false,'_label -> "Email Id")
 @helper.inputPassword(userLoginConstraint("password"),
-'_showConstraints-> false)
+'_showConstraints-> false,'_label -> "Password")
 <button value="Submit">Submit</button>
 }
-
-<a href='@controllers.routes.Application.forgotPassword'>Forgot password</a>
-<h2>@flash.get("success").getOrElse(flash.get("error"))</h2>
+</div>
+<div align="center">
+<a  align="center" href='@controllers.routes.Application.forgotPassword'>Forgot password</a>
+<h2 align="center">@flash.get("success").getOrElse(flash.get("error"))</h2>
+</div>
 
 }

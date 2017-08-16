@@ -5,6 +5,7 @@ import play.api.Logger
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import play.api.mvc.Controller
 import slick.driver.JdbcProfile
+import slick.lifted.ProvenShape
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -39,11 +40,11 @@ trait HobbyRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class HobbyTable(tag: Tag) extends Table[Hobby](tag, "hobby") { //tag->table name
 
-    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    def id: Rep[Int] = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
-    def name = column[String]("name")
+    def name: Rep[String] = column[String]("name")
 
-    def * = (id, name) <> (Hobby.tupled, Hobby.unapply)
+    def * :ProvenShape[Hobby]= (id, name) <> (Hobby.tupled, Hobby.unapply)
   }
 
 }

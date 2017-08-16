@@ -37,6 +37,18 @@ class EnableDisableControllerTest extends PlaySpec with MockitoSugar with GuiceO
 
     }
 
+    "not be able to enable the user due to session" in {
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
+      when(mockUserRepository.checkIfEmailExists("jas@gmail.com",2)).thenReturn(Future(true))
+      when(mockUserRepository.updateIsActive("jas@gmail.com",true)).thenReturn(Future(true))
+      val result = call(enableDisableController.enableDisableUser("jas@gmail.com",2,true), FakeRequest(GET, "/isactive")
+        .withSession())
+
+      status(result) mustBe 303
+      redirectLocation(result) mustBe Some("/index")
+
+    }
+
     "not be able to enable the user" in {
       when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
       when(mockUserRepository.checkIfEmailExists("jas@gmail.com",2)).thenReturn(Future(true))
@@ -46,6 +58,19 @@ class EnableDisableControllerTest extends PlaySpec with MockitoSugar with GuiceO
 
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/user")
+
+    }
+
+
+    "not be able to enable the user because session does not exits" in {
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
+      when(mockUserRepository.checkIfEmailExists("jas@gmail.com",2)).thenReturn(Future(true))
+      when(mockUserRepository.updateIsActive("jas@gmail.com",true)).thenReturn(Future(false))
+      val result = call(enableDisableController.enableDisableUser("jas@gmail.com",2,true), FakeRequest(GET, "/isactive")
+        .withSession())
+
+      status(result) mustBe 303
+      redirectLocation(result) mustBe Some("/index")
 
     }
 

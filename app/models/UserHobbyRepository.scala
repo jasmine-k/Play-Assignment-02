@@ -4,9 +4,9 @@ import com.google.inject.Inject
 import play.api.Logger
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
-import slick.lifted.QueryBase
-import scala.concurrent.ExecutionContext.Implicits.global
+import slick.lifted.{ProvenShape, QueryBase}
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 case class UserHobby(id: Int, userId: Int, hobbyId: Int)
@@ -61,13 +61,13 @@ trait UserHobbyRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class UserHobbyTable(tag: Tag) extends Table[UserHobby](tag, "userhobby") {
 
-    def id = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    def id:Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
 
-    def userId = column[Int]("userid")
+    def userId:Rep[Int] = column[Int]("userid")
 
-    def hobbyId = column[Int]("hobbyid")
+    def hobbyId:Rep[Int] = column[Int]("hobbyid")
 
-    def * = (id, userId, hobbyId) <> (UserHobby.tupled, UserHobby.unapply)
+    def * : ProvenShape[UserHobby] = (id, userId, hobbyId) <> (UserHobby.tupled, UserHobby.unapply)
   }
 
 }

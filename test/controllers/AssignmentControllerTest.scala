@@ -42,6 +42,17 @@ class AssignmentControllerTest extends PlaySpec with MockitoSugar with GuiceOneS
 
     }
 
+    "not be able to delete assign to admin due to session problem" in {
+
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
+      when(mockAssignmentRepository.deleteAssignment(1)).thenReturn(Future(true))
+      val result = call(assignmentController.deleteAssignment(1), FakeRequest(GET, "/deleteassignment").withSession())
+
+      status(result) mustBe 303
+      redirectLocation(result) mustBe Some("/index")
+
+    }
+
     "not be able to delete assign to admin" in {
 
       when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
@@ -53,6 +64,17 @@ class AssignmentControllerTest extends PlaySpec with MockitoSugar with GuiceOneS
 
     }
 
+    "not be able to delete assign to admin due to session" in {
+
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
+      when(mockAssignmentRepository.deleteAssignment(1)).thenReturn(Future(false))
+      val result = call(assignmentController.deleteAssignment(1), FakeRequest(GET, "/deleteassignment").withSession())
+
+      status(result) mustBe 303
+      redirectLocation(result) mustBe Some("/index")
+
+    }
+
     "not be able to delete assign because user is not admin" in {
 
       when(mockUserRepository.isAdminById(1)).thenReturn(Future(false))
@@ -61,6 +83,16 @@ class AssignmentControllerTest extends PlaySpec with MockitoSugar with GuiceOneS
 
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/assignment")
+    }
+
+    "not be able to delete assign because session does not exits" in {
+
+      when(mockUserRepository.isAdminById(1)).thenReturn(Future(false))
+      when(mockAssignmentRepository.deleteAssignment(1)).thenReturn(Future(true))
+      val result = call(assignmentController.deleteAssignment(1), FakeRequest(GET, "/deleteassignment").withSession())
+
+      status(result) mustBe 303
+      redirectLocation(result) mustBe Some("/index")
     }
 
     "be able to add assign" in {

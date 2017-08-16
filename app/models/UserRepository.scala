@@ -6,6 +6,7 @@ import play.api.Logger
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import org.mindrot.jbcrypt.BCrypt
+import slick.lifted.ProvenShape
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -171,30 +172,30 @@ trait UserRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class UserDataTable(tag: Tag) extends Table[UserData](tag, "userdata") { //tag->table name
 
-    def userId = column[Int]("userid", O.PrimaryKey, O.AutoInc)
+    def userId: Rep[Int] = column[Int]("userid", O.PrimaryKey, O.AutoInc)
 
-    def firstName = column[String]("firstname")
+    def firstName: Rep[String] = column[String]("firstname")
 
-    def middleName = column[Option[String]]("middlename")
+    def middleName: Rep[Option[String]] = column[Option[String]]("middlename")
 
-    def lastName = column[String]("lastname")
+    def lastName: Rep[String] = column[String]("lastname")
 
-    def mobileNumber = column[Long]("mobilenumber")
+    def mobileNumber: Rep[Long] = column[Long]("mobilenumber")
 
-    def gender = column[String]("gender")
+    def gender: Rep[String] = column[String]("gender")
 
-    def age = column[Int]("age")
+    def age: Rep[Int] = column[Int]("age")
 
-    def email = column[String]("email")
+    def email: Rep[String] = column[String]("email")
 
-    def password = column[String]("password")
+    def password: Rep[String] = column[String]("password")
 
-    def isAdmin = column[Boolean]("isadmin")
+    def isAdmin: Rep[Boolean] = column[Boolean]("isadmin")
 
-    def isActive = column[Boolean]("isactive")
+    def isActive: Rep[Boolean] = column[Boolean]("isactive")
 
-
-    def * = (userId, firstName, middleName, lastName, mobileNumber, gender, age, email, password, isAdmin, isActive) <> (UserData.tupled, UserData.unapply)
+    def * : ProvenShape[UserData] = (userId, firstName, middleName, lastName,
+      mobileNumber, gender, age, email, password, isAdmin, isActive) <> (UserData.tupled, UserData.unapply)
   }
 
 }

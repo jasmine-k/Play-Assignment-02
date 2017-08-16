@@ -5,7 +5,7 @@
 
 @navbar(isAdmin, "profile")
 
-<h1>Welcome to Knoldus!</h1>
+<h1 align="center">Welcome to Knoldus!</h1>
 
 @if(userUpdateConstraintList.hasGlobalErrors) {
 <ul>
@@ -14,6 +14,7 @@
     }
 </ul>
 }
+<div align="center">
 
 @helper.form(action = routes.UpdateProfileController.updateProfile()){
 @helper.inputText(userUpdateConstraintList("name.firstName"),
@@ -28,14 +29,12 @@
 '_showConstraints -> false, '_label -> "Gender")
 @helper.inputText(userUpdateConstraintList("age"),
 '_showConstraints -> false, '_label -> "Age")
-@helper.inputText(userUpdateConstraintList("email"),
-'_showConstraints-> false,'_label -> "Email-Id")
 @inputCheckboxGroup(userUpdateConstraintList("hobbies"),options = listOfHobbies.map(hobby => hobby -> hobby),
 '_label -> "Hobbies")
 
 <button value="Submit">Submit</button>
-
+</div>
 }
-<h2>@flash.get("success").getOrElse(flash.get("error"))</h2>
+<h2  align="center">@flash.get("success").getOrElse(flash.get("error"))</h2>
 
 }

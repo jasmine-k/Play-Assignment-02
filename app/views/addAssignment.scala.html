@@ -5,14 +5,16 @@
 @main(title) {
 @navbar(true, "add")
 
-<h1>Welcome to Knoldus!</h1>
+<h1 align="center">Welcome to Knoldus!</h1>
+<div align="center">
+    @helper.form(action = routes.AssignmentController.addAssignment()){
+    @helper.inputText(AssignmentConstraintList("title"),
+    '_showConstraints-> false,'_label -> "Title")
+    @helper.inputText(AssignmentConstraintList("description"),
+    '_showConstraints-> false,'_label -> "Description")
 
-@helper.form(action = routes.AssignmentController.addAssignment()){
-@helper.inputText(AssignmentConstraintList("title"),
-'_showConstraints-> false,'_label -> "Title")
-@helper.inputText(AssignmentConstraintList("description"),
-'_showConstraints-> false,'_label -> "Description")
-<button value="Submit">Submit</button>
+    <button align="center" value="Submit">Add</button>
+</div>
 }
 
 }
