@@ -2,13 +2,19 @@
 
 @main("Welcome to knoldus"){
 
-<h1><center>Welcome to Knoldus!</center></h1>
-<h2><center>@flash.get("success")</center></h2>
-<h2><center>@flash.get("error")</center></h2>
+<h1>
+    <center>Welcome to Knoldus!</center>
+</h1>
+<h2>
+    <center>@flash.get("success")</center>
+</h2>
+<h2>
+    <center>@flash.get("error")</center>
+</h2>
 
 <center>
-    <input type="submit" onclick="location.href='@controllers.routes.Application.loginPage';" value="Log In" />
+    <input type="submit" onclick="location.href='@controllers.routes.Application.loginPage';" value="Log In"/>
     <h3>OR</h3>
-    <input type="submit" onclick="location.href='@controllers.routes.Application.signUp';" value="Sign Up" />
+    <input type="submit" onclick="location.href='@controllers.routes.Application.signUp';" value="Sign Up"/>
 </center>
 }

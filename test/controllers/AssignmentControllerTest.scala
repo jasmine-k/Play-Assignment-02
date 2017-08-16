@@ -25,9 +25,9 @@ class AssignmentControllerTest extends PlaySpec with MockitoSugar with GuiceOneS
   val userForms = new UserForms
   implicit lazy val materializer: Materializer = app.materializer
 
-  val assignmentController = new AssignmentController(mockUserRepository, mockUserForms, mockAssignmentRepository,mockMessagesApi)
-  val assignmentOneDetails = Assignment("Assignment1","Description1")
-  val assignmentDetails = AssignmentDetails(1,"Assignment1","Description1")
+  val assignmentController = new AssignmentController(mockUserRepository, mockUserForms, mockAssignmentRepository, mockMessagesApi)
+  val assignmentOneDetails = Assignment("Assignment1", "Description1")
+  val assignmentDetails = AssignmentDetails(1, "Assignment1", "Description1")
 
   "Assignment Controller" should {
 
@@ -101,7 +101,7 @@ class AssignmentControllerTest extends PlaySpec with MockitoSugar with GuiceOneS
       when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
       when(mockAssignmentRepository.addAssignment(assignmentDetails)).thenReturn(Future(true))
       val result = call(assignmentController.addAssignment(), FakeRequest(POST, "/addassignment")
-        .withFormUrlEncodedBody("title"->"Assignment1", "description"->"Description1").withSession("userId" -> "1"))
+        .withFormUrlEncodedBody("title" -> "Assignment1", "description" -> "Description1").withSession("userId" -> "1"))
 
 
       status(result) mustBe 303
@@ -115,7 +115,7 @@ class AssignmentControllerTest extends PlaySpec with MockitoSugar with GuiceOneS
       when(mockUserRepository.isAdminById(1)).thenReturn(Future(true))
       when(mockAssignmentRepository.addAssignment(assignmentDetails)).thenReturn(Future(false))
       val result = call(assignmentController.addAssignment(), FakeRequest(POST, "/addassignment")
-        .withFormUrlEncodedBody("title"->"Assignment1", "description"->"Description1").withSession("userId" -> "1"))
+        .withFormUrlEncodedBody("title" -> "Assignment1", "description" -> "Description1").withSession("userId" -> "1"))
 
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/assignment")
@@ -128,7 +128,7 @@ class AssignmentControllerTest extends PlaySpec with MockitoSugar with GuiceOneS
       when(mockUserRepository.isAdminById(1)).thenReturn(Future(false))
       when(mockAssignmentRepository.addAssignment(assignmentDetails)).thenReturn(Future(true))
       val result = call(assignmentController.addAssignment(), FakeRequest(POST, "/addassignment")
-        .withFormUrlEncodedBody("title"->"Assignment1", "description"->"Description1").withSession("userId" -> "1"))
+        .withFormUrlEncodedBody("title" -> "Assignment1", "description" -> "Description1").withSession("userId" -> "1"))
 
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/assignment")

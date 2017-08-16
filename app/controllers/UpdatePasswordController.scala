@@ -50,12 +50,12 @@ class UpdatePasswordController @Inject()(val userRepository: UserRepository,
                   Redirect(routes.Application.loginPage()).flashing("success" -> "Password updated successfully")
                 case false =>
                   Logger.info("Update password fail")
-                  Redirect(routes.Application.loginPage()).flashing("error"->"Something went wrong!")
+                  Redirect(routes.Application.loginPage()).flashing("error" -> "Something went wrong!")
               }
             }
             case id: Int if (id <= 0) =>
               Logger.info("User does not exists")
-              Future.successful(Redirect(routes.Application.loginPage()).flashing("error"->"Incorrect Email or Password"))
+              Future.successful(Redirect(routes.Application.loginPage()).flashing("error" -> "Incorrect Email or Password"))
           }
 
         })

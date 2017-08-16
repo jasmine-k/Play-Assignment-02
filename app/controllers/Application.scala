@@ -87,8 +87,8 @@ class Application @Inject()(val messagesApi: MessagesApi, userForms: UserForms, 
                       userData.gender, userData.age, userListOfHobby))
                     hobbyRepository.getHobbies().flatMap {
                       hobbies =>
-                        userRepository.isAdmin(userData.email).map( isAdminResult =>
-                        Ok(views.html.profile("Edit Profile", updateUserFormValue, hobbies, isAdminResult)))
+                        userRepository.isAdmin(userData.email).map(isAdminResult =>
+                          Ok(views.html.profile("Edit Profile", updateUserFormValue, hobbies, isAdminResult)))
                     }
                 }
               }

@@ -26,7 +26,7 @@ class UpdatePasswordControllerTest extends PlaySpec with MockitoSugar with Guice
 
   val updatePasswordController = new UpdatePasswordController(mockUserRepository, mockUserForms, mockMessagesApi)
 
-  val userUpdatedPassword = UpdatePassword("jas@gmail.com", "jasmine","jasmine")
+  val userUpdatedPassword = UpdatePassword("jas@gmail.com", "jasmine", "jasmine")
 
   "Update Password Controller" should {
 
@@ -36,7 +36,7 @@ class UpdatePasswordControllerTest extends PlaySpec with MockitoSugar with Guice
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(1))
       when(mockUserRepository.updateUserPassword(ArgumentMatchers.any(classOf[String]), ArgumentMatchers.any(classOf[String]))).thenReturn(Future(true))
       val result = call(updatePasswordController.updatePassword(), FakeRequest(POST, "/password").withFormUrlEncodedBody(
-        "email" -> "jas@gmail.com", "password" -> "jasmine","confirmPassword"->"jasmine"))
+        "email" -> "jas@gmail.com", "password" -> "jasmine", "confirmPassword" -> "jasmine"))
 
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/login")
@@ -49,7 +49,7 @@ class UpdatePasswordControllerTest extends PlaySpec with MockitoSugar with Guice
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(1))
       when(mockUserRepository.updateUserPassword(ArgumentMatchers.any(classOf[String]), ArgumentMatchers.any(classOf[String]))).thenReturn(Future(false))
       val result = call(updatePasswordController.updatePassword(), FakeRequest(POST, "/password").withFormUrlEncodedBody(
-        "email" -> "jas@gmail.com", "password" -> "jasmine","confirmPassword"->"jasmine"))
+        "email" -> "jas@gmail.com", "password" -> "jasmine", "confirmPassword" -> "jasmine"))
 
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/login")
@@ -62,7 +62,7 @@ class UpdatePasswordControllerTest extends PlaySpec with MockitoSugar with Guice
       when(mockUserRepository.getUserId("jas@gmail.com")).thenReturn(Future(-1))
       when(mockUserRepository.updateUserPassword(ArgumentMatchers.any(classOf[String]), ArgumentMatchers.any(classOf[String]))).thenReturn(Future(false))
       val result = call(updatePasswordController.updatePassword(), FakeRequest(POST, "/password").withFormUrlEncodedBody(
-        "email" -> "jas@gmail.com", "password" -> "jasmine","confirmPassword"->"jasmine"))
+        "email" -> "jas@gmail.com", "password" -> "jasmine", "confirmPassword" -> "jasmine"))
 
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/login")

@@ -67,14 +67,14 @@ class AssignmentController @Inject()(val userRepository: UserRepository,
             case Some(adminId) =>
               userRepository.isAdminById(adminId.toInt).flatMap {
                 case true =>
-                  val newAssignment = AssignmentDetails(1,assignmentDetails.title, assignmentDetails.description)
+                  val newAssignment = AssignmentDetails(1, assignmentDetails.title, assignmentDetails.description)
                   assignmentRepository.addAssignment(newAssignment).map {
                     case true =>
                       Logger.info("Assignment added successfully")
                       Redirect(routes.Application.viewAssignment()).flashing("success" -> "Assignment added successfully") //-----redirect
                     case false =>
                       Logger.info("Something went wrong")
-                      Redirect(routes.Application.viewAssignment()).flashing("error" -> "Something went wrong")//redirect
+                      Redirect(routes.Application.viewAssignment()).flashing("error" -> "Something went wrong") //redirect
                   }
                 case false => Future.successful(Redirect(routes.Application.viewAssignment()).flashing("error" -> "You are not admin")) //-------session destroy
 
@@ -85,7 +85,6 @@ class AssignmentController @Inject()(val userRepository: UserRepository,
         })
 
   }
-
 
 
 }

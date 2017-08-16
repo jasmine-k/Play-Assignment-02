@@ -14,29 +14,29 @@
 }
 <div align="center">
 
-@helper.form(action = routes.SignUpController.signUpValidation()){
-@helper.inputText(userFormConstraint("name.firstName"),
-'_showConstraints-> false,'_label -> "First Name")
-@helper.inputText(userFormConstraint("name.middleName"),
-'_showConstraints-> false,'_label -> "Middle Name")
-@helper.inputText(userFormConstraint("name.lastName"),
-'_showConstraints-> false,'_label -> "Last Name")
-@helper.inputText(userFormConstraint("mobileNumber"),
-'_showConstraints-> false,'_label -> "Mobile Number")
-@helper.select(userFormConstraint("gender"), options(List("Male", "Female","else")),
-'_showConstraints -> false, '_label -> "Gender")
-@helper.inputText(userFormConstraint("age"),
-'_showConstraints -> false, '_label -> "Age")
-@helper.inputText(userFormConstraint("email"),
-'_showConstraints-> false,'_label -> "Email-Id")
-@helper.inputPassword(userFormConstraint("password"),
-'_showConstraints-> false,'_label -> "Password")
-@helper.inputPassword(userFormConstraint("confirmPassword"),
-'_showConstraints-> false,'_label -> "Confirm Password")
-@inputCheckboxGroup(userFormConstraint("hobbies"),options = listOfHobbies.map(hobby => hobby -> hobby),
-'_label -> "Hobbies")
+    @helper.form(action = routes.SignUpController.signUpValidation()){
+    @helper.inputText(userFormConstraint("name.firstName"),
+    '_showConstraints-> false,'_label -> "First Name")
+    @helper.inputText(userFormConstraint("name.middleName"),
+    '_showConstraints-> false,'_label -> "Middle Name")
+    @helper.inputText(userFormConstraint("name.lastName"),
+    '_showConstraints-> false,'_label -> "Last Name")
+    @helper.inputText(userFormConstraint("mobileNumber"),
+    '_showConstraints-> false,'_label -> "Mobile Number")
+    @helper.select(userFormConstraint("gender"), options(List("Male", "Female","else")),
+    '_showConstraints -> false, '_label -> "Gender")
+    @helper.inputText(userFormConstraint("age"),
+    '_showConstraints -> false, '_label -> "Age")
+    @helper.inputText(userFormConstraint("email"),
+    '_showConstraints-> false,'_label -> "Email-Id")
+    @helper.inputPassword(userFormConstraint("password"),
+    '_showConstraints-> false,'_label -> "Password")
+    @helper.inputPassword(userFormConstraint("confirmPassword"),
+    '_showConstraints-> false,'_label -> "Confirm Password")
+    @inputCheckboxGroup(userFormConstraint("hobbies"),options = listOfHobbies.map(hobby => hobby -> hobby),
+    '_label -> "Hobbies")
 
-<button value="Submit">Submit</button>
+    <button value="Submit">Submit</button>
 </div>
 }
 <h2>@flash.get("success").getOrElse(flash.get("error"))</h2>

@@ -87,7 +87,7 @@ class LoginControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
       when(mockUserRepository.isAdmin("jas@gmail.com")).thenReturn(Future(false))
       when(mockUserRepository.isActive("jas@gmail.com")).thenReturn(Future(false))
       val result = call(loginController.loginValidation, FakeRequest(POST, "/login").withFormUrlEncodedBody(
-        "email"->"jas@gmail.com","password"->"jasmine"))
+        "email" -> "jas@gmail.com", "password" -> "jasmine"))
 
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/login")

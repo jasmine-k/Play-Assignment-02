@@ -26,7 +26,7 @@ class LogoutControllerTest extends PlaySpec with MockitoSugar with GuiceOneServe
   "Logout Controller" should {
 
     "be able to logout successfully" in {
-      val result = call(logoutController.logout(), FakeRequest(GET, "/logout").withSession("userId"->"1"))
+      val result = call(logoutController.logout(), FakeRequest(GET, "/logout").withSession("userId" -> "1"))
 
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/index")

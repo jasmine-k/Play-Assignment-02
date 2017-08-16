@@ -36,8 +36,8 @@ class UpdateProfileController @Inject()(val userRepository: UserRepository,
         formWithErrors => {
           val sessionId = request.session.get("userId")
           sessionId match {
-            case Some(id)=> userRepository.isAdminById(id.toInt).flatMap(isAdmin=>
-          hobbyRepository.getHobbies.map(hobbies => BadRequest(views.html.profile("Error", formWithErrors, hobbies,isAdmin))))
+            case Some(id) => userRepository.isAdminById(id.toInt).flatMap(isAdmin =>
+              hobbyRepository.getHobbies.map(hobbies => BadRequest(views.html.profile("Error", formWithErrors, hobbies, isAdmin))))
           }
         },
         userData => {

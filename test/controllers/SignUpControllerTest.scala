@@ -13,6 +13,7 @@ import play.api.test.Helpers._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+
 class SignUpControllerTest extends PlaySpec with MockitoSugar with GuiceOneServerPerSuite {
 
 

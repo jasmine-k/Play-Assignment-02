@@ -22,7 +22,7 @@ class AddAssignmentTest extends PlaySpec with MockitoSugar {
       val mockFlash = mock[Flash]
       when(mockFlash.get("error")) thenReturn None
       when(mockFlash.get("success")) thenReturn None
-      val addAssignmentPage = views.html.addAssignment.render("Knoldus",addAssignmentForm, mockMesssages,mockFlash)
+      val addAssignmentPage = views.html.addAssignment.render("Knoldus", addAssignmentForm, mockMesssages, mockFlash)
 
       addAssignmentPage.toString.contains("Title") mustEqual true
     }

@@ -12,14 +12,14 @@ import scala.concurrent.Future
 case class UserHobby(id: Int, userId: Int, hobbyId: Int)
 
 class UserHobbyRepository @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends HobbyRepositoryTable with UserHobbyRepositoryTable{
+  extends HobbyRepositoryTable with UserHobbyRepositoryTable {
 
   import driver.api._
 
-  def addUserHobby(userId: Int, listOfHobby: List[List[Int]]) :Future[Boolean]= {
+  def addUserHobby(userId: Int, listOfHobby: List[List[Int]]): Future[Boolean] = {
     Logger.info("Adding list of hobbies into database")
     val listOfValidHobbyId = listOfHobby.filter(_ != Nil)
-    val listOfResult: List[Future[Boolean]] = listOfValidHobbyId.map (
+    val listOfResult: List[Future[Boolean]] = listOfValidHobbyId.map(
       hobbyId => db.run(userHobbyQuery += UserHobby(1, userId, hobbyId.head)).map(_ > 0))
 
     Future.sequence(listOfResult).map(
@@ -27,7 +27,7 @@ class UserHobbyRepository @Inject()(protected val dbConfigProvider: DatabaseConf
         if (result.contains(false)) {
           false
         }
-        else{
+        else {
           true
         })
 
@@ -36,18 +36,18 @@ class UserHobbyRepository @Inject()(protected val dbConfigProvider: DatabaseConf
   def getUserHobby(userId: Int): Future[List[String]] = {
 
     Logger.info("Extracting user hobby list from database")
-    val userHobbyJoin : QueryBase[Seq[(Int, String)]] = for {
+    val userHobbyJoin: QueryBase[Seq[(Int, String)]] = for {
 
-      (user, hobby) <- userHobbyQuery join hobbyQuery on(_.hobbyId === _.id)
+      (user, hobby) <- userHobbyQuery join hobbyQuery on (_.hobbyId === _.id)
     } yield (user.userId, hobby.name)
     val userHobbyJoinResult: Future[Seq[(Int, String)]] = db.run(userHobbyJoin.result)
     userHobbyJoinResult.map(hobby => hobby.filter(_._1 == userId).map(_._2).toList)
 
   }
 
-  def deleteUserHobby(userId: Int):Future[Boolean]={
+  def deleteUserHobby(userId: Int): Future[Boolean] = {
     Logger.info("Deleting user hobbies from database")
-    db.run(userHobbyQuery.filter(_.userId === userId).delete).map(_>0)
+    db.run(userHobbyQuery.filter(_.userId === userId).delete).map(_ > 0)
   }
 
 
@@ -61,11 +61,11 @@ trait UserHobbyRepositoryTable extends HasDatabaseConfigProvider[JdbcProfile] {
 
   class UserHobbyTable(tag: Tag) extends Table[UserHobby](tag, "userhobby") {
 
-    def id:Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    def id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
 
-    def userId:Rep[Int] = column[Int]("userid")
+    def userId: Rep[Int] = column[Int]("userid")
 
-    def hobbyId:Rep[Int] = column[Int]("hobbyid")
+    def hobbyId: Rep[Int] = column[Int]("hobbyid")
 
     def * : ProvenShape[UserHobby] = (id, userId, hobbyId) <> (UserHobby.tupled, UserHobby.unapply)
   }

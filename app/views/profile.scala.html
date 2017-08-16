@@ -16,25 +16,25 @@
 }
 <div align="center">
 
-@helper.form(action = routes.UpdateProfileController.updateProfile()){
-@helper.inputText(userUpdateConstraintList("name.firstName"),
-'_showConstraints-> false,'_label -> "First Name")
-@helper.inputText(userUpdateConstraintList("name.middleName"),
-'_showConstraints-> false,'_label -> "Middle Name")
-@helper.inputText(userUpdateConstraintList("name.lastName"),
-'_showConstraints-> false,'_label -> "Last Name")
-@helper.inputText(userUpdateConstraintList("mobileNumber"),
-'_showConstraints-> false,'_label -> "Mobile Number")
-@helper.select(userUpdateConstraintList("gender"), options(List("Male", "Female")),
-'_showConstraints -> false, '_label -> "Gender")
-@helper.inputText(userUpdateConstraintList("age"),
-'_showConstraints -> false, '_label -> "Age")
-@inputCheckboxGroup(userUpdateConstraintList("hobbies"),options = listOfHobbies.map(hobby => hobby -> hobby),
-'_label -> "Hobbies")
+    @helper.form(action = routes.UpdateProfileController.updateProfile()){
+    @helper.inputText(userUpdateConstraintList("name.firstName"),
+    '_showConstraints-> false,'_label -> "First Name")
+    @helper.inputText(userUpdateConstraintList("name.middleName"),
+    '_showConstraints-> false,'_label -> "Middle Name")
+    @helper.inputText(userUpdateConstraintList("name.lastName"),
+    '_showConstraints-> false,'_label -> "Last Name")
+    @helper.inputText(userUpdateConstraintList("mobileNumber"),
+    '_showConstraints-> false,'_label -> "Mobile Number")
+    @helper.select(userUpdateConstraintList("gender"), options(List("Male", "Female")),
+    '_showConstraints -> false, '_label -> "Gender")
+    @helper.inputText(userUpdateConstraintList("age"),
+    '_showConstraints -> false, '_label -> "Age")
+    @inputCheckboxGroup(userUpdateConstraintList("hobbies"),options = listOfHobbies.map(hobby => hobby -> hobby),
+    '_label -> "Hobbies")
 
-<button value="Submit">Submit</button>
+    <button value="Submit">Submit</button>
 </div>
 }
-<h2  align="center">@flash.get("success").getOrElse(flash.get("error"))</h2>
+<h2 align="center">@flash.get("success").getOrElse(flash.get("error"))</h2>
 
 }

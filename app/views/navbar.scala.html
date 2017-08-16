@@ -11,7 +11,7 @@
 
             <li id="profile"><a href='@controllers.routes.Application.updateProfile'>User Profile</a></li>
             <li id="view"><a href='@controllers.routes.Application.viewAssignment'>View Assignment</a></li>
-            <li ><a href='@controllers.routes.LogoutController.logout'>Logout</a></li>
+            <li><a href='@controllers.routes.LogoutController.logout'>Logout</a></li>
 
         </ul>
     </div>
@@ -23,11 +23,12 @@
             <a class="navbar-brand">Knoldus</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li class="{% if(activeTab == 'profile') %}active{% endif %}"><a href='@controllers.routes.Application.updateProfile'>User Profile</a></li>
-            <li ><a href='@controllers.routes.Application.viewAssignment'>View Assignment</a></li>
-            <li ><a href='@controllers.routes.Application.addAssignment'>Add Assignment</a></li>
-            <li ><a href='@controllers.routes.Application.viewUser'>View Users</a></li>
-            <li ><a href='@controllers.routes.LogoutController.logout'>Logout</a></li>
+            <li class="{% if(activeTab == 'profile') %}active{% endif %}"><a
+                    href='@controllers.routes.Application.updateProfile'>User Profile</a></li>
+            <li><a href='@controllers.routes.Application.viewAssignment'>View Assignment</a></li>
+            <li><a href='@controllers.routes.Application.addAssignment'>Add Assignment</a></li>
+            <li><a href='@controllers.routes.Application.viewUser'>View Users</a></li>
+            <li><a href='@controllers.routes.LogoutController.logout'>Logout</a></li>
 
         </ul>
     </div>

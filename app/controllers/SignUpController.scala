@@ -20,7 +20,7 @@ class SignUpController @Inject()(val userRepository: UserRepository,
                                  hobbyRepository: HobbyRepository,
                                  userHobbyRepository: UserHobbyRepository,
                                  val messagesApi: MessagesApi
-                                        ) extends Controller with I18nSupport {
+                                ) extends Controller with I18nSupport {
 
   /**
     * Create an Action to render an HTML page.

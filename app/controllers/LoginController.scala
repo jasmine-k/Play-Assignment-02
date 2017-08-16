@@ -66,7 +66,7 @@ class LoginController @Inject()(val userRepository: UserRepository,
               }
             case false =>
               Logger.info("User does not exists")
-              Future.successful(Redirect(routes.Application.loginPage()).flashing("error"->"Incorrect Email or Password"))
+              Future.successful(Redirect(routes.Application.loginPage()).flashing("error" -> "Incorrect Email or Password"))
           }
 
         })
