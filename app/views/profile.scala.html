@@ -32,7 +32,7 @@
     @inputCheckboxGroup(userUpdateConstraintList("hobbies"),options = listOfHobbies.map(hobby => hobby -> hobby),
     '_label -> "Hobbies")
 
-    <button value="Submit">Submit</button>
+    <button value="Submit">Update Profile</button>
 </div>
 }
 <h2 align="center">@flash.get("success").getOrElse(flash.get("error"))</h2>

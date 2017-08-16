@@ -17,22 +17,22 @@ class UserHobbyRepositoryTest extends PlaySpec with MockitoSugar {
 
     "be able to add list of hobbies of the user" in {
       val testResult = userHobbyRepository.result(userHobbyRepository.repository.addUserHobby(1,listOfUserHobbiesId))
-      testResult mustBe (true)
+      testResult mustBe true
     }
 
     "be able to get list of hobbies of the user" in {
       val testResult = userHobbyRepository.result(userHobbyRepository.repository.getUserHobby(1))
-      testResult mustBe (listOfUserHobbies)
+      testResult mustBe listOfUserHobbies
     }
 
     "be able to delete list of hobbies of the user" in {
       val testResult = userHobbyRepository.result(userHobbyRepository.repository.deleteUserHobby(1))
-      testResult mustBe (true)
+      testResult mustBe true
     }
 
     "not be able to delete list of hobbies of the user due to incorrect userId" in {
       val testResult = userHobbyRepository.result(userHobbyRepository.repository.deleteUserHobby(1))
-      testResult mustBe (false)
+      testResult mustBe false
     }
 
   }

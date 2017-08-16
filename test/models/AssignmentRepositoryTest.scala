@@ -11,23 +11,23 @@ class AssignmentRepositoryTest extends PlaySpec with MockitoSugar {
 
     "be able to add assignment" in {
       val testResult = assignmentRepository.result(assignmentRepository.repository.addAssignment(assignmentDetails))
-      testResult mustBe (true)
+      testResult mustBe true
     }
 
     "be able to get list of assignments" in {
       val testResult = assignmentRepository.result(assignmentRepository.repository.getAssignments)
-      testResult mustBe (List(assignmentDetails))
+      testResult mustBe List(assignmentDetails)
     }
 
     "be able to delete assignment" in {
       val testResult = assignmentRepository.result(assignmentRepository.repository.deleteAssignment(1))
-      testResult mustBe (true)
+      testResult mustBe true
     }
 
     "not be able to delete assignment due to incorrect userId" in {
       val id = 900
       val testResult = assignmentRepository.result(assignmentRepository.repository.deleteAssignment(id))
-      testResult mustBe (false)
+      testResult mustBe false
     }
   }
 

@@ -17,12 +17,12 @@ class HobbyRepositoryTest extends PlaySpec with MockitoSugar {
 
     "be able to get list of hobbies" in {
       val testResult = hobbyRepository.result(hobbyRepository.repository.getHobbies())
-      testResult mustBe (listOfHobbies)
+      testResult mustBe listOfHobbies
     }
 
     "be able to get list of IDs of hobbies" in {
       val testResult = hobbyRepository.result(hobbyRepository.repository.getHobbiesId(listOfHobbies))
-      testResult mustBe (listOfHobbiesId)
+      testResult mustBe listOfHobbiesId
     }
   }
 
